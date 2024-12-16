@@ -27,31 +27,47 @@ class Sensors {
             echo json_encode(['error' => 'Failed to fetch data']);
         }
     }
-    
-    public function fetchLatestSensorData($sensor_id)
+    public function getLatestSensorData($sensor_id, $limit = null)
     {
-        $sql = "SELECT sensor_data.value, sensors.id, sensors.sensor_name 
-                FROM sensor_data
-                INNER JOIN sensors ON sensors.id = sensor_data.sensor_id
-                WHERE sensor_data.sensor_id = :sensor_id
-                ORDER BY sensor_data.reading_time DESC
-                LIMIT 1"; 
-    
+        if ($limit === null) {
+            $sql = "SELECT sensor_data.*, sensors.sensor_name 
+                    FROM sensor_data
+                    INNER JOIN sensors ON sensors.id = sensor_data.sensor_id
+                    WHERE sensor_data.sensor_id = :sensor_id
+                    ORDER BY sensor_data.reading_time DESC"; 
+        } else {
+            $sql = "SELECT sensor_data.value, sensors.id, sensors.sensor_name 
+                    FROM sensor_data
+                    INNER JOIN sensors ON sensors.id = sensor_data.sensor_id
+                    WHERE sensor_data.sensor_id = :sensor_id
+                    ORDER BY sensor_data.reading_time DESC
+                    LIMIT :limit"; 
+        }
+
         $stmt = $this->db->prepare($sql);
-    
         $stmt->bindParam(':sensor_id', $sensor_id, PDO::PARAM_INT);
         
+        if ($limit !== null) {
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT); 
+        }
+
         if ($stmt->execute()) {
-            $data = $stmt->fetch(PDO::FETCH_ASSOC); 
-            
-            if ($data) {
-                echo json_encode($data); 
-            } else {
-                echo json_encode(['error' => 'No data found for this sensor']); 
-            }
+            return $limit === null ? $stmt->fetchAll(PDO::FETCH_ASSOC) : $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
-            echo json_encode(['error' => 'Failed to fetch latest data']); 
+            return null;
         }
     }
-    
-}
+
+    public function fetchLatestSensorDataJSON($sensor_id, $limit = 1)
+    {
+        $data = $this->getLatestSensorData($sensor_id, $limit);
+
+        if ($data) {
+            echo json_encode($data); 
+        } else {
+            echo json_encode(['error' => 'No data found for this sensor']); 
+        }
+    }
+
+        
+    }

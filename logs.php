@@ -1,3 +1,8 @@
+<?php
+
+  include_once 'init.php';
+  $sensor = new Sensors();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,6 +29,9 @@
       href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css"
     />
     <link rel="stylesheet" href="https://atugatran.github.io/FontAwesome6Pro/css/all.min.css" >
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
   </head>
 
   <body>
@@ -48,34 +56,29 @@
             <div class="container">
                 <div class="card">
                     <div class="card-body">
+                    <div class="card-title">Light Intensity Logs</div>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table" id="light_intensity_logs">
                                 <thead>
                                   <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th scope="col">Sensor Value</th>
+                                    <th scope="col">Reading Time</th>
                                   </tr>
                                 </thead>
                                 <tbody>
+                                <?php
+                                  $data = $sensor->getLatestSensorData(6);
+                                  foreach ($data as $res):
+                                ?>
                                   <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <th scope="row"><?= $res['id'] ?></th>
+                                    <td><?= $res['value'] ?></td>
+                                    <td><?= $res['reading_time'] ?></td>
                                   </tr>
-                                  <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                  </tr>
+                                <?php
+                                  endforeach;
+                                ?>
                                 </tbody>
                               </table>
                         </div>
@@ -118,5 +121,12 @@
     <!-- Custom Scripts -->
     <script src="assets/js/index.js"></script>
      <script src="assets/js/charts.js"></script>
+     <script>
+      const dataTable = new simpleDatatables.DataTable("#light_intensity_logs", {
+	searchable: true,
+	fixedHeight: true,
+})
+
+     </script>
   </body>
 </html>

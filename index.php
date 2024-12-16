@@ -31,12 +31,12 @@
     <link rel="stylesheet" href="https://atugatran.github.io/FontAwesome6Pro/css/all.min.css" >
 
     <script>
-      let ph_data = <?= $sensor->fetchLatestSensorData(1); ?>;
-      let ph_temp_data = <?= $sensor->fetchLatestSensorData(2); ?>;
-      let tank1_temp_data = <?= $sensor->fetchLatestSensorData(3); ?>;
-      let tank2_temp_data = <?= $sensor->fetchLatestSensorData(4); ?>;
-      let water_level_data = <?= $sensor->fetchLatestSensorData(5); ?>;
-      let light_data = <?= $sensor->fetchLatestSensorData(6); ?>;
+      let ph_data = <?= $sensor->fetchLatestSensorDataJSON(1); ?>;
+      let ph_temp_data = <?= $sensor->fetchLatestSensorDataJSON(2); ?>;
+      let tank1_temp_data = <?= $sensor->fetchLatestSensorDataJSON(3); ?>;
+      let tank2_temp_data = <?= $sensor->fetchLatestSensorDataJSON(4); ?>;
+      let water_level_data = <?= $sensor->fetchLatestSensorDataJSON(5); ?>;
+      let light_data = <?= $sensor->fetchLatestSensorDataJSON(6); ?>;
 
     </script>
   </head>

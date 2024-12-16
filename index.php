@@ -258,12 +258,13 @@
      <script src="assets/js/index.js"></script>
      <script src="assets/js/charts.js"></script>
      <script>
-    document.getElementById('ph_level_value').innerText = ph_data.value || 'N/A';
-    document.getElementById('ph_temp_value').innerText = ph_temp_data.value || 'N/A';
-    document.getElementById('tank1_temp_value').innerText = tank1_temp_data.value || 'N/A';
-    document.getElementById('tank2_temp_value').innerText = tank2_temp_data.value || 'N/A';
-    document.getElementById('water_level_value').innerText = water_level_data.value || 'N/A';
-    document.getElementById('light_intensity_value').innerText = light_data.value || 'N/A';
+   document.getElementById('ph_level_value').innerText = ph_data[0]?.value || 'N/A';
+document.getElementById('ph_temp_value').innerText = ph_temp_data[0]?.value || 'N/A';
+document.getElementById('tank1_temp_value').innerText = tank1_temp_data[0]?.value || 'N/A';
+document.getElementById('tank2_temp_value').innerText = tank2_temp_data[0]?.value || 'N/A';
+document.getElementById('water_level_value').innerText = water_level_data[0]?.value || 'N/A';
+document.getElementById('light_intensity_value').innerText = light_data[0]?.value || 'N/A';
+
 
      </script>
   </body>

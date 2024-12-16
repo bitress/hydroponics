@@ -112,14 +112,14 @@
             <ul class="menu">
               <li class="sidebar-title">Menu</li>
 
-              <li class="sidebar-item active">
+              <li class="sidebar-item">
                 <a href="index.html" class="sidebar-link">
                   <i class="bi bi-grid-fill"></i>
                   <span>Dashboard</span>
                 </a>
               </li>
 
-              <li class="sidebar-item">
+              <li class="sidebar-item active">
                 <a href="index.html" class="sidebar-link">
                   <i class="bi bi-clock-history"></i>
                   <span>Logs</span>
@@ -162,119 +162,45 @@
         </div>
         <div class="page-content">
           <section class="row">
-            <div class="col-12 col-lg-12">
-              <div class="row">
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon purple mb-2">
-                            <i class="fa-regular fa-droplet"></i>                          </div>
+
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First</th>
+                                    <th scope="col">Last</th>
+                                    <th scope="col">Handle</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">3</th>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>@twitter</td>
+                                  </tr>
+                                </tbody>
+                              </table>
                         </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">
-                            PH Level
-                          </h6>
-                          <h6 class="font-extrabold mb-0">6.5</h6>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon purple mb-2">
-                            <i class="fa-solid fa-temperature-three-quarters"></i>                                                  </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">
-                            PH Level Temperature
-                          </h6>
-                          <h6 class="font-extrabold mb-0">65</h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon blue mb-2">
-                            <i class="fa-solid fa-sun-bright"></i>
-                                                    </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">Light Intensity Level</h6>
-                          <h6 class="font-extrabold mb-0">800 lux</h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-6 col-lg-3 col-md-6">
-                  <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                      <div class="row">
-                        <div
-                          class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
-                        >
-                          <div class="stats-icon green mb-2">
-                            <i class="fa-solid fa-temperature-list"></i>                          </div>
-                        </div>
-                        <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                          <h6 class="text-muted font-semibold">Temperature</h6>
-                          <h6 class="font-extrabold mb-0">22°C</h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-               
-              </div>
             </div>
 
-            <div class="col-12">
-              <div class="container">
-                <div class="card mt-2">
-                  <div class="card-body">
-                    <div class="card-title">Ph Level 
-                      <div class="flex float-end">
-                        <div class="input-group">
-                          <select class="form-select" id="inputGroupSelect01">
-                              <option selected>Choose...</option>
-                              <option value="1">Past 24 Hours</option>
-                              <option value="2">Daily</option>
-                              <option value="3">Weekly</option>
-                          </select>
-                      </div>
-
-                      </div>
-                    </div>
-                    <div id="ph_level_chart"></div>
-                  </div>
-                </div>
-
-                <div class="card mt-2">
-                  <div class="card-body">
-                    <div class="card-title">Temperature Readings </div>
-                    <div id="temperature_chart"></div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
           </section>
         </div>
 

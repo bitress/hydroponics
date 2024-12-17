@@ -196,15 +196,15 @@
               <div class="container">
                 <div class="card mt-2">
                   <div class="card-body">
-                    <div class="card-title">Ph Level 
+                    <div class="card-title">pH Level 
                       <div class="flex float-end">
                         <div class="input-group">
-                          <select class="form-select" id="inputGroupSelect01">
-                              <option selected>Choose...</option>
-                              <option value="1">Past 24 Hours</option>
-                              <option value="2">Daily</option>
-                              <option value="3">Weekly</option>
-                          </select>
+                        <select class="form-select" id="dateRangeSelect">
+                    <option value="24h">Last 24 Hours</option>
+                    <option value="daily">Today</option>
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d">Last 30 Days</option>
+                </select>
                       </div>
 
                       </div>
@@ -256,15 +256,126 @@
 
     <!-- Custom Scripts -->
      <script src="assets/js/index.js"></script>
-     <script src="assets/js/charts.js"></script>
      <script>
-   document.getElementById('ph_level_value').innerText = ph_data[0]?.value || 'N/A';
-document.getElementById('ph_temp_value').innerText = ph_temp_data[0]?.value || 'N/A';
-document.getElementById('tank1_temp_value').innerText = tank1_temp_data[0]?.value || 'N/A';
-document.getElementById('tank2_temp_value').innerText = tank2_temp_data[0]?.value || 'N/A';
-document.getElementById('water_level_value').innerText = water_level_data[0]?.value || 'N/A';
-document.getElementById('light_intensity_value').innerText = light_data[0]?.value || 'N/A';
+     document.getElementById('ph_level_value').innerText = ph_data[0]?.value || 'N/A';
+     document.getElementById('ph_temp_value').innerText = ph_temp_data[0]?.value || 'N/A';
+     document.getElementById('tank1_temp_value').innerText = tank1_temp_data[0]?.value || 'N/A';
+     document.getElementById('tank2_temp_value').innerText = tank2_temp_data[0]?.value || 'N/A';
+     document.getElementById('water_level_value').innerText = water_level_data[0]?.value || 'N/A';
+     document.getElementById('light_intensity_value').innerText = light_data[0]?.value || 'N/A';
+     
+     document.getElementById('dateRangeSelect').addEventListener('change', function () {
+    let range = this.value;
+    fetchData(range);
+});
 
+function fetchData(range) {
+    fetch(`fetchSensorData.php?sensor_id=1&range=${range}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length) {
+                updateChart(data);
+            } else {
+                alert('No data available for this range');
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function updateChart(data) {
+    let phValues = data.map(item => parseFloat(item.value));
+    let timestamps = data.map(item => new Date(item.reading_time).toLocaleString());
+
+    let options = {
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        series: [{
+            name: 'pH Level',
+            data: phValues
+        }],
+        xaxis: {
+            categories: timestamps,
+            title: {
+                text: 'Date and Time'
+            },
+            labels: {
+                style: {
+                    colors: '#6c757d',
+                    fontSize: '12px',
+                }
+            },
+            tooltip: {
+                enabled: true,
+                formatter: function(value) {
+                    return new Date(value).toLocaleString();
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'pH Level'
+            },
+            labels: {
+                style: {
+                    colors: '#6c757d',
+                    fontSize: '12px',
+                }
+            }
+        },
+        title: {
+            text: 'pH Sensor Data Over Time',
+            align: 'center',
+            style: {
+                fontSize: '18px',
+                fontWeight: 'bold',
+                color: '#495057',
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function(val) {
+                    return `${val} pH`;
+                }
+            }
+        },
+        grid: {
+            show: true,
+            borderColor: '#f1f1f1',
+            strokeDashArray: 4,
+            position: 'back'
+        },
+        colors: ['#0d6efd'],
+        responsive: [{
+            breakpoint: 600,
+            options: {
+                chart: {
+                    width: '100%',
+                },
+                xaxis: {
+                    labels: {
+                        style: {
+                            fontSize: '10px',
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            fontSize: '10px',
+                        }
+                    }
+                }
+            }
+        }]
+    };
+
+    let chart = new ApexCharts(document.querySelector("#ph_level_chart"), options);
+    chart.render();
+}
+
+fetchData('7d');
 
      </script>
   </body>

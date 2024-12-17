@@ -68,6 +68,66 @@ class Sensors {
             echo json_encode(['error' => 'No data found for this sensor']); 
         }
     }
+    public function fetchSensorDataByDateRange($sensor_id, $range = null)
+    {
+        $sql = "SELECT sensor_data.value, sensors.id, sensors.sensor_name, sensor_data.reading_time
+                FROM sensor_data
+                INNER JOIN sensors ON sensors.id = sensor_data.sensor_id
+                WHERE sensor_data.sensor_id = :sensor_id ";
+    
+        $params = ['sensor_id' => $sensor_id];
+    
+        if ($range) {
+            $currentDate = new DateTime();
+    
+            switch ($range) {
+                case '24h':
+                    $date = $currentDate->modify('-1 day')->format('Y-m-d H:i:s');
+                    $sql .= "AND sensor_data.reading_time >= :date";
+                    $params['date'] = $date;
+                    break;
+    
+                case '7d':
+                    $date = $currentDate->modify('-7 days')->format('Y-m-d H:i:s');
+                    $sql .= "AND sensor_data.reading_time >= :date";
+                    $params['date'] = $date;
+                    break;
+    
+                case '30d':
+                    $date = $currentDate->modify('-30 days')->format('Y-m-d H:i:s');
+                    $sql .= "AND sensor_data.reading_time >= :date";
+                    $params['date'] = $date;
+                    break;
+    
+                case 'daily':
+                    $date = $currentDate->format('Y-m-d');
+                    $sql .= "AND DATE(sensor_data.reading_time) = :date";
+                    $params['date'] = $date;
+                    break;
+    
+                default:
+                    return null; // Invalid range
+            }
+        }
+    
+        $sql .= " ORDER BY sensor_data.reading_time DESC";
+    
+        $stmt = $this->db->prepare($sql);
+    
+        // Bind the parameters
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(":$key", $value);
+        }
+    
+        if ($stmt->execute()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // Log the error for debugging purposes
+            error_log("Error executing query: " . implode(" ", $stmt->errorInfo()));
+            return null;
+        }
+    }
+    
 
         
     }

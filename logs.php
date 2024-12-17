@@ -54,7 +54,7 @@
           <section class="row">
 
             <div class="container">
-                <div class="card">
+                <div class="card mb-2">
                     <div class="card-body">
                     <div class="card-title">Light Intensity Logs</div>
                         <div class="table-responsive">
@@ -69,6 +69,65 @@
                                 <tbody>
                                 <?php
                                   $data = $sensor->getLatestSensorData(6);
+                                  foreach ($data as $res):
+                                ?>
+                                  <tr>
+                                    <th scope="row"><?= $res['id'] ?></th>
+                                    <td><?= $res['value'] ?></td>
+                                    <td><?= $res['reading_time'] ?></td>
+                                  </tr>
+                                <?php
+                                  endforeach;
+                                ?>
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                <div class="card mb-2">
+                    <div class="card-body">
+                    <div class="card-title">Tank 1 Temperature Logs</div>
+                        <div class="table-responsive">
+                            <table class="table" id="temp_tank1_logs">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Sensor Value</th>
+                                    <th scope="col">Reading Time</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                  $data = $sensor->getLatestSensorData(3);
+                                  foreach ($data as $res):
+                                ?>
+                                  <tr>
+                                    <th scope="row"><?= $res['id'] ?></th>
+                                    <td><?= $res['value'] ?></td>
+                                    <td><?= $res['reading_time'] ?></td>
+                                  </tr>
+                                <?php
+                                  endforeach;
+                                ?>
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-body">
+                    <div class="card-title">Tank 2 Temperature Logs</div>
+                        <div class="table-responsive">
+                            <table class="table" id="temp_tank2_logs">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Sensor Value</th>
+                                    <th scope="col">Reading Time</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                  $data = $sensor->getLatestSensorData(4);
                                   foreach ($data as $res):
                                 ?>
                                   <tr>
@@ -122,10 +181,9 @@
     <script src="assets/js/index.js"></script>
      <script src="assets/js/charts.js"></script>
      <script>
-      const dataTable = new simpleDatatables.DataTable("#light_intensity_logs", {
-	searchable: true,
-	fixedHeight: true,
-})
+      const dataTable = new simpleDatatables.DataTable("#light_intensity_logs", {searchable: true,fixedHeight: true,})
+      const dataTable1 = new simpleDatatables.DataTable("#temp_tank1_logs", {searchable: true,fixedHeight: true,})
+      const dataTable2 = new simpleDatatables.DataTable("#temp_tank2_logs", {searchable: true,fixedHeight: true,})
 
      </script>
   </body>

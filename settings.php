@@ -46,78 +46,7 @@
                     <div class="container">
 
                         <div class="row">
-                            <div class="col-md-7">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Configure Data Collection Cycles</h5>
-                                        <form action="/submit" method="post">
-                                            <!-- Cycle 1 -->
-                                            <div class="mb-4">
-                                                <h6>Cycle 1</h6>
-                                                <div class="mb-3">
-                                                    <label for="cycle_1_interval" class="form-label">Interval
-                                                        (seconds)</label>
-                                                    <input type="number" class="form-control" id="cycle_1_interval"
-                                                        name="cycle_1_interval" min="1" required
-                                                        placeholder="Enter interval in seconds">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="cycle_1_duration" class="form-label">Duration
-                                                        (minutes)</label>
-                                                    <input type="number" class="form-control" id="cycle_1_duration"
-                                                        name="cycle_1_duration" min="1" required
-                                                        placeholder="Enter duration in minutes">
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <!-- Cycle 2 -->
-                                            <div class="mb-4">
-                                                <h6>Cycle 2</h6>
-                                                <div class="mb-3">
-                                                    <label for="cycle_2_interval" class="form-label">Interval
-                                                        (seconds)</label>
-                                                    <input type="number" class="form-control" id="cycle_2_interval"
-                                                        name="cycle_2_interval" min="1" required
-                                                        placeholder="Enter interval in seconds">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="cycle_2_duration" class="form-label">Duration
-                                                        (minutes)</label>
-                                                    <input type="number" class="form-control" id="cycle_2_duration"
-                                                        name="cycle_2_duration" min="1" required
-                                                        placeholder="Enter duration in minutes">
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <!-- Cycle 3 -->
-                                            <div class="mb-4">
-                                                <h6>Cycle 3</h6>
-                                                <div class="mb-3">
-                                                    <label for="cycle_3_interval" class="form-label">Interval
-                                                        (seconds)</label>
-                                                    <input type="number" class="form-control" id="cycle_3_interval"
-                                                        name="cycle_3_interval" min="1" required
-                                                        placeholder="Enter interval in seconds">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="cycle_3_duration" class="form-label">Duration
-                                                        (minutes)</label>
-                                                    <input type="number" class="form-control" id="cycle_3_duration"
-                                                        name="cycle_3_duration" min="1" required
-                                                        placeholder="Enter duration in minutes">
-                                                </div>
-                                            </div>
-
-                                            <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary">Start Data Collection</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+        
                         </div>
 
                     </div>

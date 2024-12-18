@@ -113,6 +113,14 @@
               </li>
             </ul>
           </li>
+
+          <li class="sidebar-item">
+            <a href="settings.php" class="sidebar-link">
+              <i class="bi bi-sliders"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+
         </ul>
       </div>
     </div>

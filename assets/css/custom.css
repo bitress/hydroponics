@@ -1,0 +1,22 @@
+/* Sidebar submenu (collapsed by default) */
+.sidebar-wrapper .menu .submenu {
+    max-height: 0; /* Initially collapsed */
+    overflow: hidden; /* Prevent content overflow */
+    transition: max-height 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* When submenu is open, expand it to a maximum height */
+.sidebar-wrapper .menu .submenu.submenu-open {
+    max-height: 150px !important; /* Limit max height when open */
+    overflow: visible; /* Allow content to show when expanded */
+}
+
+/* Optional: For smooth toggle effect */
+.sidebar-wrapper .menu .submenu li {
+    padding: 5px 20px; /* Add some padding for submenu items */
+}
+
+/* You can also tweak the submenu styling, like background color */
+.sidebar-wrapper .menu .submenu li:hover {
+    background-color: #f1f1f1;
+}

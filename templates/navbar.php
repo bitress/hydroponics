@@ -58,15 +58,38 @@
                 <li class="sidebar-item has-sub">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-stack"></i>
-                        <span>Components</span>
+                        <span>Relays</span>
                     </a>
                     <ul class="submenu">
+
                         <li class="submenu-item">
-                            <a href="#" class="submenu-link">Accordion</a>
+                            <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                <div class="form-check form-switch fs-6">
+                                    <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
+                                    <label class="form-check-label">Lights</label>
+                                </div>
+                            </div>
                         </li>
                         <li class="submenu-item">
-                            <a href="#" class="submenu-link">Alert</a>
+                            <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
+                                <i class="fa-solid fa-fan"></i>
+                                <div class="form-check form-switch fs-6">
+                                    <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
+                                    <label class="form-check-label">Fan</label>
+                                </div>
+                            </div>
                         </li>
+                        <li class="submenu-item">
+                            <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
+                                <i class="fa-solid fa-pump"></i>
+                                <div class="form-check form-switch fs-6">
+                                    <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
+                                    <label class="form-check-label">Water Pump</label>
+                                </div>
+                            </div>
+                        </li>
+
                     </ul>
                 </li>
                 <li class="sidebar-item">
@@ -75,33 +98,8 @@
                         <span>Settings</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <div class="d-flex gap-2 align-items-center mt-2 sidebar-link">
-                        <i class="fa-solid fa-lightbulb"></i>
-                        <div class="form-check form-switch fs-6">
-                            <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
-                            <label class="form-check-label">Lights</label>
-                        </div>
-                    </div>
-                </li>
-                <li class="sidebar-item">
-                    <div class="d-flex gap-2 align-items-center mt-2 sidebar-link">
-                        <i class="fa-solid fa-fan"></i>
-                        <div class="form-check form-switch fs-6">
-                            <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
-                            <label class="form-check-label">Fan</label>
-                        </div>
-                    </div>
-                </li>
-                <li class="sidebar-item">
-                    <div class="d-flex gap-2 align-items-center mt-2 sidebar-link">
-                        <i class="fa-solid fa-pump"></i>
-                        <div class="form-check form-switch fs-6">
-                            <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
-                            <label class="form-check-label">Water Pump</label>
-                        </div>
-                    </div>
-                </li>
+
+
             </ul>
         </div>
     </div>

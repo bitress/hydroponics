@@ -30,6 +30,8 @@
     />
     <link rel="stylesheet" href="https://atugatran.github.io/FontAwesome6Pro/css/all.min.css" >
 
+      <link rel="stylesheet" href="assets/css/custom.css" />
+
     <script>
       let ph_data = <?= $sensor->fetchLatestSensorDataJSON(1); ?>;
       let ph_temp_data = <?= $sensor->fetchLatestSensorDataJSON(2); ?>;

@@ -1,8 +1,3 @@
-<?php
-
-  include_once 'init.php';
-  $sensor = new Sensors();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,17 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cycles - Hydroponics</title>
 
-    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/svg/favicon.svg"
-        type="image/x-icon" />
+    <?php include_once 'templates/head-styles.php'; ?>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app.css" />
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app-dark.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css" />
-    <link rel="stylesheet" href="https://atugatran.github.io/FontAwesome6Pro/css/all.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 </head>
 
 <body>
@@ -51,9 +38,9 @@
                                     <div class="card-body">
                                         <div class="d-flex flex-end">
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
-                                            Add a Cycle
-                                        </button>
+                                                data-bs-target="#addCycleModal">
+                                                Add a Cycle
+                                            </button>
                                         </div>
                                         <div class="table-responsive mt-2">
                                             <table class="table">
@@ -62,13 +49,28 @@
                                                     <th>Sensor Name</th>
                                                     <th>Reading Interval (seconds)</th>
                                                     <th>Duration (minutes)</th>
+                                                    <th>Actions</th>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td>1</td>
+                                                        <td>Ultrasonic Sensor</td>
+                                                        <td>30</td>
+                                                        <td>60</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-primary configure-cycle" data-id="1"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Configure Cycle">
+                                                                    <i class="fa fa-cogs"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary delete-cycle" data-id="1"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Delete Cycle">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -102,117 +104,340 @@
     </div>
 
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCycleModal" tabindex="-1" aria-labelledby="addCycleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="addCycleModalLabel">Add Data Collection Cycles</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Configure Data Collection Cycles</h5>
-                            <form action="/submit" method="post">
-                                <!-- Cycle 1 -->
-                                <div class="mb-4">
-                                    <h6>Cycle 1</h6>
-                                    <div class="mb-3">
-                                        <label for="cycle_1_interval" class="form-label">Interval
-                                            (seconds)</label>
-                                        <input type="number" class="form-control" id="cycle_1_interval"
-                                            name="cycle_1_interval" min="1" required
-                                            placeholder="Enter interval in seconds">
+                            <form id="sensorForm">
+                                <input type="hidden" name="action" value="createCycles">
+                                <div class="row m-0">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="sensor_cycle">Select Sensor</label>
+                                            <select name="sensor_cycle" id="sensor_cyle" class="form-control">
+                                                <option value="1">Ultrasonic Sensor</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="cycle_1_duration" class="form-label">Duration
-                                            (minutes)</label>
-                                        <input type="number" class="form-control" id="cycle_1_duration"
-                                            name="cycle_1_duration" min="1" required
-                                            placeholder="Enter duration in minutes">
-                                    </div>
-                                </div>
+                                    <div class="col-md-4">
+                                        <!-- Cycle 1 -->
+                                        <div class="mb-4">
+                                            <h6>Cycle 1</h6>
+                                            <div class="mb-3">
+                                                <label for="cycle_1_interval" class="form-label">Interval
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="cycle_1_interval"
+                                                    name="cycle_1_interval" min="1" required
+                                                    placeholder="Enter interval in seconds">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cycle_1_duration" class="form-label">Duration
+                                                    (minutes)</label>
+                                                <input type="number" class="form-control" id="cycle_1_duration"
+                                                    name="cycle_1_duration" min="1" required
+                                                    placeholder="Enter duration in minutes">
+                                            </div>
+                                        </div>
 
-                                <hr>
-
-                                <!-- Cycle 2 -->
-                                <div class="mb-4">
-                                    <h6>Cycle 2</h6>
-                                    <div class="mb-3">
-                                        <label for="cycle_2_interval" class="form-label">Interval
-                                            (seconds)</label>
-                                        <input type="number" class="form-control" id="cycle_2_interval"
-                                            name="cycle_2_interval" min="1" required
-                                            placeholder="Enter interval in seconds">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="cycle_2_duration" class="form-label">Duration
-                                            (minutes)</label>
-                                        <input type="number" class="form-control" id="cycle_2_duration"
-                                            name="cycle_2_duration" min="1" required
-                                            placeholder="Enter duration in minutes">
-                                    </div>
-                                </div>
 
-                                <hr>
-                                <div class="mb-4">
-                                    <h6>Cycle 3</h6>
-                                    <div class="mb-3">
-                                        <label for="cycle_3_interval" class="form-label">Interval
-                                            (seconds)</label>
-                                        <input type="number" class="form-control" id="cycle_3_interval"
-                                            name="cycle_3_interval" min="1" required
-                                            placeholder="Enter interval in seconds">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="cycle_3_duration" class="form-label">Duration
-                                            (minutes)</label>
-                                        <input type="number" class="form-control" id="cycle_3_duration"
-                                            name="cycle_3_duration" min="1" required
-                                            placeholder="Enter duration in minutes">
-                                    </div>
-                                </div>
+                                    <div class="col-md-4">
 
-                                <hr>
 
-                                <!-- Submit Button -->
-                                <div class="mb-4">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                        <!-- Cycle 2 -->
+                                        <div class="mb-4">
+                                            <h6>Cycle 2</h6>
+                                            <div class="mb-3">
+                                                <label for="cycle_2_interval" class="form-label">Interval
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="cycle_2_interval"
+                                                    name="cycle_2_interval" min="1" required
+                                                    placeholder="Enter interval in seconds">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cycle_2_duration" class="form-label">Duration
+                                                    (minutes)</label>
+                                                <input type="number" class="form-control" id="cycle_2_duration"
+                                                    name="cycle_2_duration" min="1" required
+                                                    placeholder="Enter duration in minutes">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-4">
+                                            <h6>Cycle 3</h6>
+                                            <div class="mb-3">
+                                                <label for="cycle_3_interval" class="form-label">Interval
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="cycle_3_interval"
+                                                    name="cycle_3_interval" min="1" required
+                                                    placeholder="Enter interval in seconds">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cycle_3_duration" class="form-label">Duration
+                                                    (minutes)</label>
+                                                <input type="number" class="form-control" id="cycle_3_duration"
+                                                    name="cycle_3_duration" min="1" required
+                                                    placeholder="Enter duration in minutes">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editCycleModal" tabindex="-1" aria-labelledby="editCycleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editCycleModalLabel">Configure Data Collection Cycles</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>~
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <form>
+                                <div class="row m-0">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="sensor_cycle">Select Sensor</label>
+                                            <select name="edit_sensor_cycle" id="edit_sensor_cyle" class="form-control">
+                                                <option value="1">Ultrasonic Sensor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- Cycle 1 -->
+                                        <div class="mb-4">
+                                            <h6>Cycle 1</h6>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_1_interval" class="form-label">Interval
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_1_interval"
+                                                    name="edit_cycle_1_interval" min="1" required
+                                                    placeholder="Enter interval in seconds">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_1_duration" class="form-label">Duration
+                                                    (minutes)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_1_duration"
+                                                    name="edit_cycle_1_duration" min="1" required
+                                                    placeholder="Enter duration in minutes">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+
+                                        <!-- Cycle 2 -->
+                                        <div class="mb-4">
+                                            <h6>Cycle 2</h6>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_2_interval" class="form-label">Interval
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_2_interval"
+                                                    name="edit_cycle_2_interval" min="1" required
+                                                    placeholder="Enter interval in seconds">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_2_duration" class="form-label">Duration
+                                                    (minutes)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_2_duration"
+                                                    name="edit_cycle_2_duration" min="1" required
+                                                    placeholder="Enter duration in minutes">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-4">
+                                            <h6>Cycle 3</h6>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_3_interval" class="form-label">Interval
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_3_interval"
+                                                    name="edit_cycle_3_interval" min="1" required
+                                                    placeholder="Enter interval in seconds">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="edit_cycle_3_duration" class="form-label">Duration
+                                                    (minutes)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_3_duration"
+                                                    name="edit_cycle_3_duration" min="1" required
+                                                    placeholder="Enter duration in minutes">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="">
+                                        <button type="button" id="addCycleButton" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <!-- End content -->
-    <script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/components/dark.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js">
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/js/app.js"></script>
-
-    <!-- Need: Apexcharts -->
-    <script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/extensions/apexcharts/apexcharts.min.js">
-    </script>
-    <script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/pages/dashboard.js"></script>
-
-    <!-- Custom Scripts -->
-    <script src="assets/js/index.js"></script>
-    <script src="assets/js/charts.js"></script>
+    <?php include_once 'templates/body-scripts.php'; ?>
     <script>
-    const dataTable = new simpleDatatables.DataTable("#light_intensity_logs", {
-        searchable: true,
-        fixedHeight: true,
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        $('#addCycleButton').on('click', function(){
+            alert(1)
+        });
+
+        $('#sensorForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Serialize the form data
+            var formData = $(this).serialize();
+
+            // Disable the submit button to prevent multiple submissions
+            var submitButton = $(this).find('button[type="submit"]');
+            submitButton.prop('disabled', true).text('Submitting...');
+
+            $.ajax({
+                url: 'ajax.php', // The PHP handler script
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            timer: 2000, // 2 seconds
+                            showConfirmButton: false,
+                            willClose: () => {
+                                // Reload the page after the alert closes
+                                location.reload();
+                            }
+                        });
+                        $('#sensorForm')[0].reset(); // Reset the form on success
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message,
+                            timer: 2000, // 2 seconds
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX Error:', textStatus, errorThrown);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An unexpected error occurred.',
+                        timer: 2000, // 2 seconds
+                        showConfirmButton: false
+                    });
+                },
+                complete: function() {
+                    // Re-enable the submit button
+                    submitButton.prop('disabled', false).text('Submit');
+                }
+            });
+        });
+
+    });
+
+
+    $(document).on('click', '.configure-cycle', function(){
+        const cycleId = $(this).data('id');
+
+        const editCycleModal = new bootstrap.Modal('#editCycleModal')
+        editCycleModal.show();
+        
     })
+
+    $(document).on('click', '.delete-cycle', function() {
+            const cycleId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will permanently delete the cycle.",
+            icon: 'warning',
+            showCancelButton: true,  
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'ajax.php',
+                    type: 'POST',
+                    data: { 
+                        action: 'deleteCycle',
+                        cycle_id: cycleId 
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire(
+                                'Deleted!',
+                                'The cycle has been deleted.',
+                                'success'
+                            );
+                            setTimeout(function () { 
+                                location.reload()
+                                }, 2000)
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                'Something went wrong. Please try again.',
+                                'error'
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error!',
+                            'There was an issue with the request.',
+                            'error'
+                        );
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelled',
+                    'Your cycle is safe :)',
+                    'info'
+                );
+            }
+        });
+    });
+
+
     </script>
 </body>
 

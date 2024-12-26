@@ -1,3 +1,4 @@
+<?php include_once 'init.php'; ?>
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
@@ -39,62 +40,118 @@
                 <li class="sidebar-title">Menu</li>
                 <li class="sidebar-item">
                     <a href="index.php" class="sidebar-link">
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
+                        <i class="fa-sharp-duotone fa-solid fa-gauge"></i>                        <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="logs.php" class="sidebar-link">
-                        <i class="bi bi-clock-history"></i>
-                        <span>Logs</span>
+                        <i class="fa-duotone fa-solid fa-rectangle-history"></i>                        <span>Logs</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="cycles.php" class="sidebar-link">
-                        <i class="bi bi-activity"></i>
-                        <span>Cycles</span>
+                        <i class="fa-duotone fa-solid fa-arrows-spin"></i>                        <span>Cycles</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="sensors.php" class="sidebar-link">
+                        <i class="fa-duotone fa-solid fa-sensor"></i>                        
+                        <span>Sensors</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="relays.php" class="sidebar-link">
+                        <i class="fa-duotone fa-solid fa-light-switch"></i>
+                        <span>Configure Relays</span>
                     </a>
                 </li>
                 <li class="sidebar-item has-sub">
                     <a href="#" class="sidebar-link">
-                        <i class="bi bi-stack"></i>
+                        <i class="fa-duotone fa-solid fa-light-switch"></i>
                         <span>Relays</span>
                     </a>
                     <ul class="submenu">
-
                         <li class="submenu-item">
                             <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
                                 <i class="fa-solid fa-lightbulb"></i>
                                 <div class="form-check form-switch fs-6">
-                                    <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
-                                    <label class="form-check-label">Lights</label>
+                                    <input
+                                        class="form-check-input me-0 relay-toggle"
+                                        type="checkbox"
+                                        id="relay-light"
+                                        data-relay-id="1"
+                                        <?php 
+                                            echo ($relays[0]['relay_status'] == 1) ? 'checked' : ''; 
+                                            echo ($relays[0]['control_mode'] == 'automatic') ? ' disabled' : '';
+                                        ?>
+                                        style="cursor: <?php echo ($relays[0]['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer'; ?>"
+                                    />
+                                    <label class="form-check-label" for="relay-light">
+                                        Lights
+                                        <?php if ($relays[0]['control_mode'] == 'automatic'): ?>
+                                            <small class="text-muted">(Auto)</small>
+                                        <?php endif; ?>
+                                    </label>
                                 </div>
                             </div>
                         </li>
+                    
                         <li class="submenu-item">
                             <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
                                 <i class="fa-solid fa-fan"></i>
                                 <div class="form-check form-switch fs-6">
-                                    <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
-                                    <label class="form-check-label">Fan</label>
+                                    <input
+                                        class="form-check-input me-0 relay-toggle"
+                                        type="checkbox"
+                                        id="relay-fan"
+                                        data-relay-id="2"
+                                        <?php 
+                                            echo ($relays[1]['relay_status'] == 1) ? 'checked' : ''; 
+                                            echo ($relays[1]['control_mode'] == 'automatic') ? ' disabled' : '';
+                                        ?>
+                                        style="cursor: <?php echo ($relays[1]['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer'; ?>"
+                                    />
+                                    <label class="form-check-label" for="relay-fan">
+                                        Fan
+                                        <?php if ($relays[1]['control_mode'] == 'automatic'): ?>
+                                            <small class="text-muted">(Auto)</small>
+                                        <?php endif; ?>
+                                    </label>
                                 </div>
                             </div>
                         </li>
+                    
                         <li class="submenu-item">
                             <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
                                 <i class="fa-solid fa-pump"></i>
                                 <div class="form-check form-switch fs-6">
-                                    <input class="form-check-input me-0" type="checkbox" id="" style="cursor: pointer" />
-                                    <label class="form-check-label">Water Pump</label>
+                                    <input
+                                        class="form-check-input me-0 relay-toggle"
+                                        type="checkbox"
+                                        id="relay-water-pump"
+                                        data-relay-id="3"
+                                        <?php 
+                                            echo ($relays[2]['relay_status'] == 1) ? 'checked' : ''; 
+                                            echo ($relays[2]['control_mode'] == 'automatic') ? ' disabled' : '';
+                                        ?>
+                                        style="cursor: <?php echo ($relays[2]['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer'; ?>"
+                                    />
+                                    <label class="form-check-label" for="relay-water-pump">
+                                        Water Pump
+                                        <?php if ($relays[2]['control_mode'] == 'automatic'): ?>
+                                            <small class="text-muted">(Auto)</small>
+                                        <?php endif; ?>
+                                    </label>
                                 </div>
                             </div>
                         </li>
-
                     </ul>
+                    
+                    
                 </li>
                 <li class="sidebar-item">
                     <a href="settings.php" class="sidebar-link">
-                        <i class="bi bi-sliders"></i>
+                        <i class="fa-duotone fa-solid fa-gears"></i>
                         <span>Settings</span>
                     </a>
                 </li>

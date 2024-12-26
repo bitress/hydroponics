@@ -127,6 +127,71 @@ class Sensors {
             return null;
         }
     }
+
+    public function fetchSensorDataByDateRangeMultiple($sensor_ids, $range = null)
+    {
+        // Prepare the base SQL with placeholders for multiple sensor_ids
+        $placeholders = implode(',', array_fill(0, count($sensor_ids), '?'));
+        $sql = "SELECT sensor_data.value, sensors.id, sensors.sensor_name, sensor_data.reading_time
+                FROM sensor_data
+                INNER JOIN sensors ON sensors.id = sensor_data.sensor_id
+                WHERE sensor_data.sensor_id IN ($placeholders) ";
+        
+        $params = $sensor_ids;
+        
+        if ($range) {
+            $currentDate = new DateTime();
+    
+            switch ($range) {
+                case '24h':
+                    $date = $currentDate->modify('-1 day')->format('Y-m-d H:i:s');
+                    $sql .= "AND sensor_data.reading_time >= ? ";
+                    $params[] = $date;
+                    break;
+    
+                case '7d':
+                    $date = $currentDate->modify('-7 days')->format('Y-m-d H:i:s');
+                    $sql .= "AND sensor_data.reading_time >= ? ";
+                    $params[] = $date;
+                    break;
+    
+                case '30d':
+                    $date = $currentDate->modify('-30 days')->format('Y-m-d H:i:s');
+                    $sql .= "AND sensor_data.reading_time >= ? ";
+                    $params[] = $date;
+                    break;
+    
+                case 'daily':
+                    $date = $currentDate->format('Y-m-d');
+                    $sql .= "AND DATE(sensor_data.reading_time) = ? ";
+                    $params[] = $date;
+                    break;
+    
+                default:
+                    // Invalid range, return empty array
+                    return [];
+            }
+        }
+    
+        $sql .= "ORDER BY sensor_data.reading_time DESC";
+    
+        $stmt = $this->db->prepare($sql);
+    
+        // Bind the parameters
+        foreach ($params as $index => $value) {
+            // PDO parameter indexing starts at 1
+            $stmt->bindValue($index + 1, $value);
+        }
+    
+        if ($stmt->execute()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // Log the error for debugging purposes
+            error_log("Error executing query: " . implode(" ", $stmt->errorInfo()));
+            return [];
+        }
+    }
+
     
 
         

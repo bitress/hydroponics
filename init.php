@@ -11,3 +11,9 @@ spl_autoload_register(function($class){
 });
 
 $db = Database::getInstance();
+$relayClass = new Relay();
+$relays = [
+    $relayClass->getRelayById(1),
+    $relayClass->getRelayById(2),
+    $relayClass->getRelayById(3),
+];

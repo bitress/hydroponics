@@ -7,7 +7,7 @@
 
 /* When submenu is open, expand it to a maximum height */
 .sidebar-wrapper .menu .submenu.submenu-open {
-    max-height: 150px !important; /* Limit max height when open */
+    max-height: 250px !important; /* Limit max height when open */
     overflow: visible; /* Allow content to show when expanded */
 }
 

@@ -65,7 +65,7 @@ if (isset($_POST['action'])){
                         'duration'  => $duration
                     ];
                 } else {
-                    http_response_code(400); // Bad Request
+                    http_response_code(400); 
                     echo json_encode(['status' => 'error', 'message' => "Missing data for Cycle {$i}"]);
                     exit;
                 }
@@ -76,10 +76,153 @@ if (isset($_POST['action'])){
             if ($inserted) {
                 echo json_encode(['status' => 'success', 'message' => 'Data inserted successfully']);
             }
-
-
-
             break;
+        case 'getCycle':
+            header('Content-Type: application/json; charset=utf-8');
+            $response = [
+                'success' => false,
+                'data' => null,
+                'message' => ''
+            ];
+            $sensorId = isset($_POST['sensor_id']) ? intval($_POST['sensor_id']) : 0;
+            if ($sensorId > 0) {
+                try {
+                    $cycle_class = new Cycles();
+                    $cyclesData = $cycle_class->getCyclesBySensorId($sensorId);
+                    if (!empty($cyclesData)) {
+                        $response['success'] = true;
+                        $response['data'] = $cyclesData;
+                    } else {
+                        $response['message'] = 'No cycles found for the specified sensor.';
+                    }
+                } catch (Exception $e) {
+                    $response['message'] = 'An error occurred while fetching cycle data.';
+                    error_log('Error in getCycle action: ' . $e->getMessage());
+                }
+            } else {
+                $response['message'] = 'Invalid sensor ID provided.';
+            }
+            echo json_encode($response);
+            break;
+        case 'configureCycle':
+            $sensorId = isset($_POST['sensor_id']) ? intval($_POST['sensor_id']) : 0;
+            $cycle1_interval = isset($_POST['cycle1_interval']) ? intval($_POST['cycle1_interval']) : null;
+            $cycle1_duration = isset($_POST['cycle1_duration']) ? intval($_POST['cycle1_duration']) : null;
+            $cycle2_interval = isset($_POST['cycle2_interval']) ? intval($_POST['cycle2_interval']) : null;
+            $cycle2_duration = isset($_POST['cycle2_duration']) ? intval($_POST['cycle2_duration']) : null;
+            $cycle3_interval = isset($_POST['cycle3_interval']) ? intval($_POST['cycle3_interval']) : null;
+            $cycle3_duration = isset($_POST['cycle3_duration']) ? intval($_POST['cycle3_duration']) : null;
+
+            if ($sensorId <= 0) {
+                $response['message'] = 'Invalid sensor selected.';
+                echo json_encode($response);
+                exit();
+            }
+
+            
+            try {
+                $cycles_class = new Cycles();
+               
+                $existingCycles = $cycles_class->checkIfHasCycle($sensorId);
+
+                if (empty($existingCycles)) {
+                    $newCycles = [
+                        [
+                            'cycle_number' => 1,
+                            'interval_seconds' => $cycle1_interval,
+                            'duration_minutes' => $cycle1_duration
+                        ],
+                        [
+                            'cycle_number' => 2,
+                            'interval_seconds' => $cycle2_interval,
+                            'duration_minutes' => $cycle2_duration
+                        ],
+                        [
+                            'cycle_number' => 3,
+                            'interval_seconds' => $cycle3_interval,
+                            'duration_minutes' => $cycle3_duration
+                        ]
+                    ];
+
+                    $createSuccess = $cycles_class->createCycles($sensorId, $newCycles);
+
+                    if ($createSuccess) {
+                        $response['success'] = true;
+                        $response['message'] = 'Cycles created successfully.';
+                    } else {
+                        $response['message'] = 'Failed to create cycles.';
+                    }
+                } else {
+                 
+                    $updatedCycles = [
+                        [
+                            'cycle_id' => isset($existingCycles[0]['cycle_id']) ? $existingCycles[0]['cycle_id'] : null,
+                            'cycle_number' => 1,
+                            'interval_seconds' => $cycle1_interval,
+                            'duration_minutes' => $cycle1_duration
+                        ],
+                        [
+                            'cycle_id' => isset($existingCycles[1]['cycle_id']) ? $existingCycles[1]['cycle_id'] : null,
+                            'cycle_number' => 2,
+                            'interval_seconds' => $cycle2_interval,
+                            'duration_minutes' => $cycle2_duration
+                        ],
+                        [
+                            'cycle_id' => isset($existingCycles[2]['cycle_id']) ? $existingCycles[2]['cycle_id'] : null,
+                            'cycle_number' => 3,
+                            'interval_seconds' => $cycle3_interval,
+                            'duration_minutes' => $cycle3_duration
+                        ]
+                    ];
+
+                    $updateSuccess = $cycles_class->updateCycles($sensorId, $updatedCycles);
+
+                    if ($updateSuccess) {
+                        $response['success'] = true;
+                        $response['message'] = 'Cycles updated successfully.';
+                    } else {
+                        $response['message'] = 'Failed to update cycles.';
+                    }
+                }
+            } catch (Exception $e) {
+                $response['message'] = 'An error occurred while configuring cycles.';
+                error_log('Error in configureCycle action: ' . $e->getMessage());
+            }
+
+            echo json_encode($response);
+        break;    
+        case 'startCycle':
+            case 'stopCycle':
+                try {
+                    if (!isset($_POST['cycle_id'])) {
+                        throw new Exception('Cycle ID is required.');
+                    }
+    
+                    $cycleId = intval($_POST['cycle_id']);
+                    if ($cycleId <= 0) {
+                        throw new Exception('Invalid Cycle ID.');
+                    }
+    
+                    $isActive = ($action === 'startCycle') ? 1 : 0;
+    
+                    $stmt = $db->prepare('UPDATE cycles SET is_active = :is_active WHERE cycle_id = :cycle_id');
+                    $stmt->execute(['is_active' => $isActive, 'cycle_id' => $cycleId]);
+    
+                    // Check if any row was updated
+                    if ($stmt->rowCount() > 0) {
+                        $response['success'] = true;
+                        $response['message'] = 'Cycle ' . (($isActive) ? 'started' : 'stopped') . ' successfully.';
+                    } else {
+                        throw new Exception('No changes made or invalid Cycle ID.');
+                    }
+                } catch (Exception $e) {
+                    $response['message'] = $e->getMessage();
+                }
+                echo json_encode($response);
+
+                break;
+    
+    
         default:
             break;
     }

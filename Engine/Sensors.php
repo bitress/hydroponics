@@ -9,6 +9,14 @@ class Sensors {
         $this->db = Database::getInstance();
     }
 
+    public function getSensors()
+    {
+        $sql = "SELECT * FROM sensors";
+        $stmt = $this->db->query($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function fetchLightSensorData()
     {
         $sql = "SELECT * FROM sensor_data 

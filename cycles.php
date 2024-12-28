@@ -8,7 +8,6 @@
 
     <?php include_once 'templates/head-styles.php'; ?>
 
-
 </head>
 
 <body>
@@ -36,45 +35,89 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="d-flex flex-end">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#addCycleModal">
-                                                Add a Cycle
-                                            </button>
-                                        </div>
                                         <div class="table-responsive mt-2">
-                                            <table class="table">
-                                                <thead>
-                                                    <th>Cycle ID</th>
-                                                    <th>Sensor Name</th>
-                                                    <th>Reading Interval (seconds)</th>
-                                                    <th>Duration (minutes)</th>
-                                                    <th>Actions</th>
+                                            <table class="table table-striped ">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Sensor Name</th>
+                                                        <th>Cycles</th>
+                                                        <th>Pause</th>
+                                                        <th>Actions</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Ultrasonic Sensor</td>
-                                                        <td>30</td>
-                                                        <td>60</td>
+                                                    <?php
+                                                        $cyclesModel = new Cycles();
+                                                        $groupedSensors = $cyclesModel->getGroupedCycles();
+
+                                                        if (!empty($groupedSensors)):
+                                                            foreach ($groupedSensors as $sensorId => $sensorData):
+                                                    ?>
+                                                    <tr class="sensor-row">
+                                                        <td><?= htmlspecialchars($sensorData['sensor_name']) ?></td>
+                                        
                                                         <td>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-primary configure-cycle" data-id="1"
+                                                            <?php if (!empty($sensorData['cycles'])): ?>
+                                                                <table class="table table-sm table-hover mb-0 nested-table">
+                                                                    <thead class="thead-light">
+                                                                        <tr>
+                                                                            <th style="width: 20%;">Cycle Number</th>
+                                                                            <th style="width: 40%;">Interval (Seconds)</th>
+                                                                            <th style="width: 40%;">Duration (Minutes)</th>
+                                                                            <th style="width: 40%;">Status</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php foreach ($sensorData['cycles'] as $cycle): ?>
+                                                                            <tr class="cycle-row" data-cycle-id="<?= htmlspecialchars($cycle['cycle_id']) ?>">
+                                                                                <td><?= htmlspecialchars($cycle['cycle_number']) ?></td>
+                                                                                <td><?= htmlspecialchars($cycle['interval_seconds']) ?></td>
+                                                                                <td><?= htmlspecialchars($cycle['duration_minutes']) ?></td>
+                                                                                <td>
+                                                                                    <?php if ($cycle['is_active']): ?>
+                                                                                        <button class="btn btn-danger btn-sm toggle-cycle-btn" data-action="stop">Stop</button>
+                                                                                    <?php else: ?>
+                                                                                        <button class="btn btn-success btn-sm toggle-cycle-btn" data-action="start">Start</button>
+                                                                                    <?php endif; ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach; ?>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            <?php else: ?>
+                                                                <span class="text-muted">No cycles available.</span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td><?= htmlspecialchars($sensorData['pause']) ?></td>
+                                                        <td>
+                                                            <div class="btn-group" role="group" aria-label="Group Actions">
+                                                                <button type="button" class="btn btn-primary configure-cycle" data-sensor-id="<?= htmlspecialchars($sensorId) ?>"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                    title="Configure Cycle">
+                                                                    title="Configure All Cycles for This Sensor">
                                                                     <i class="fa fa-cogs"></i>
                                                                 </button>
-                                                                <button type="button" class="btn btn-primary delete-cycle" data-id="1"
+                                                                <button type="button" class="btn btn-danger delete-cycle" data-sensor-id="<?= htmlspecialchars($sensorId) ?>"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                    title="Delete Cycle">
+                                                                    title="Delete All Cycles for This Sensor">
                                                                     <i class="fa fa-trash"></i>
                                                                 </button>
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <?php
+                                                            endforeach;
+                                                        else:
+                                                    ?>
+                                                    <tr>
+                                                        <td colspan="3" class="text-center">No cycles found.</td>
+                                                    </tr>
+                                                    <?php endif; ?>
                                                 </tbody>
+
                                             </table>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -104,122 +147,29 @@
     </div>
 
 
-    <div class="modal fade" id="addCycleModal" tabindex="-1" aria-labelledby="addCycleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addCycleModalLabel">Add Data Collection Cycles</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="sensorForm">
-                                <input type="hidden" name="action" value="createCycles">
-                                <div class="row m-0">
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="sensor_cycle">Select Sensor</label>
-                                            <select name="sensor_cycle" id="sensor_cyle" class="form-control">
-                                                <option value="1">Ultrasonic Sensor</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <!-- Cycle 1 -->
-                                        <div class="mb-4">
-                                            <h6>Cycle 1</h6>
-                                            <div class="mb-3">
-                                                <label for="cycle_1_interval" class="form-label">Interval
-                                                    (seconds)</label>
-                                                <input type="number" class="form-control" id="cycle_1_interval"
-                                                    name="cycle_1_interval" min="1" required
-                                                    placeholder="Enter interval in seconds">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="cycle_1_duration" class="form-label">Duration
-                                                    (minutes)</label>
-                                                <input type="number" class="form-control" id="cycle_1_duration"
-                                                    name="cycle_1_duration" min="1" required
-                                                    placeholder="Enter duration in minutes">
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-4">
-
-
-                                        <!-- Cycle 2 -->
-                                        <div class="mb-4">
-                                            <h6>Cycle 2</h6>
-                                            <div class="mb-3">
-                                                <label for="cycle_2_interval" class="form-label">Interval
-                                                    (seconds)</label>
-                                                <input type="number" class="form-control" id="cycle_2_interval"
-                                                    name="cycle_2_interval" min="1" required
-                                                    placeholder="Enter interval in seconds">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="cycle_2_duration" class="form-label">Duration
-                                                    (minutes)</label>
-                                                <input type="number" class="form-control" id="cycle_2_duration"
-                                                    name="cycle_2_duration" min="1" required
-                                                    placeholder="Enter duration in minutes">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="mb-4">
-                                            <h6>Cycle 3</h6>
-                                            <div class="mb-3">
-                                                <label for="cycle_3_interval" class="form-label">Interval
-                                                    (seconds)</label>
-                                                <input type="number" class="form-control" id="cycle_3_interval"
-                                                    name="cycle_3_interval" min="1" required
-                                                    placeholder="Enter interval in seconds">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="cycle_3_duration" class="form-label">Duration
-                                                    (minutes)</label>
-                                                <input type="number" class="form-control" id="cycle_3_duration"
-                                                    name="cycle_3_duration" min="1" required
-                                                    placeholder="Enter duration in minutes">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Submit Button -->
-                                    <div class="">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="editCycleModal" tabindex="-1" aria-labelledby="editCycleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="editCycleModalLabel">Configure Data Collection Cycles</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>~
+                </div>
                 <div class="modal-body">
                     <div class="card">
                         <div class="card-body">
-                            <form>
+                            <form id="configureCycle">
                                 <div class="row m-0">
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="sensor_cycle">Select Sensor</label>
-                                            <select name="edit_sensor_cycle" id="edit_sensor_cyle" class="form-control">
-                                                <option value="1">Ultrasonic Sensor</option>
+                                            <select name="edit_sensor_cycle" id="edit_sensor_cycle" class="form-control">
+                                                <?php
+                                                    $sensor_class = new Sensors();
+                                                    $sensors = $sensor_class->getSensors();
+                                                    foreach($sensors as $row):
+                                                ?>
+                                                <option value="<?= $row['id'] ?>"><?= $row['sensor_name'] ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
@@ -290,7 +240,7 @@
 
                                     <!-- Submit Button -->
                                     <div class="">
-                                        <button type="button" id="addCycleButton" class="btn btn-primary">Submit</button>
+                                        <button type="button" id="configureCycleButton" class="btn btn-primary">Submit</button>
                                     </div>
                                 </div>
                             </form>
@@ -304,28 +254,133 @@
 
     <?php include_once 'templates/body-scripts.php'; ?>
     <script>
+
+    $(document).ready(function() {
+        $(document).on('click', '.toggle-cycle-btn', function() {
+        var button = $(this);
+        var row = button.closest('tr');
+        var cycleId = row.data('cycle-id');
+        var action = button.data('action'); 
+        button.prop('disabled', true);
+
+        $.ajax({
+            url: 'ajax.php', 
+            method: 'POST',
+            data: { 
+                action: action === 'start' ? 'startCycle' : 'stopCycle',
+                cycle_id: cycleId 
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.success) {
+                    if(action === 'start') {
+                        button.removeClass('btn-success').addClass('btn-danger')
+                            .text('Stop').data('action', 'stop');
+                    } else {
+                        button.removeClass('btn-danger').addClass('btn-success')
+                            .text('Start').data('action', 'start');
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message || 'Operation completed successfully.',
+                        timer: 2000, 
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true
+                    }).then(() => {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500); 
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || 'Operation failed.',
+                        timer: 2000, 
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end',
+                        timerProgressBar: true
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while processing your request.',
+                    timer: 2000, // 2 seconds
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end',
+                    timerProgressBar: true
+                });
+            },
+            complete: function() {
+                button.prop('disabled', false);
+            }
+        });
+    });
+
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function(tooltipTriggerEl) {
             new bootstrap.Tooltip(tooltipTriggerEl);
         });
 
-        $('#addCycleButton').on('click', function(){
-            alert(1)
+    $('#configureCycleButton').on('click', function(){
+        const formData = {
+            action: 'configureCycle',
+            sensor_id: $('#edit_sensor_cycle').find(":selected").val(),
+            cycle1_interval: $('#edit_cycle_1_interval').val(),
+            cycle1_duration: $('#edit_cycle_1_duration').val(),
+            cycle2_interval: $('#edit_cycle_2_interval').val(),
+            cycle2_duration: $('#edit_cycle_2_duration').val(),
+            cycle3_interval: $('#edit_cycle_3_interval').val(),
+            cycle3_duration: $('#edit_cycle_3_duration').val(),
+        };
+
+       
+        $('#configureCycleButton').prop('disabled', true).text('Submitting...');
+
+        $.ajax({
+            url: 'ajax.php', 
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response){
+                if(response.success){
+                    alert('Cycles configured successfully!');
+                    $('#editCycleModal').modal('hide');
+                } else {
+                    alert('Error: ' + (response.message || 'An unexpected error occurred.'));
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.error('AJAX Error:', textStatus, errorThrown);
+                alert('An error occurred while processing your request. Please try again.');
+            },
+            complete: function(){
+                $('#configureCycleButton').prop('disabled', false).text('Submit');
+            }
         });
+    });
 
         $('#sensorForm').on('submit', function(e) {
-            e.preventDefault(); // Prevent the default form submission
-
-            // Serialize the form data
+            e.preventDefault(); 
             var formData = $(this).serialize();
 
-            // Disable the submit button to prevent multiple submissions
             var submitButton = $(this).find('button[type="submit"]');
             submitButton.prop('disabled', true).text('Submitting...');
 
             $.ajax({
-                url: 'ajax.php', // The PHP handler script
+                url: 'ajax.php', 
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
@@ -338,11 +393,10 @@
                             timer: 2000, // 2 seconds
                             showConfirmButton: false,
                             willClose: () => {
-                                // Reload the page after the alert closes
                                 location.reload();
                             }
                         });
-                        $('#sensorForm')[0].reset(); // Reset the form on success
+                        $('#sensorForm')[0].reset(); 
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -374,12 +428,55 @@
 
 
     $(document).on('click', '.configure-cycle', function(){
-        const cycleId = $(this).data('id');
+        const sensorId = $(this).data('sensor-id');
 
-        const editCycleModal = new bootstrap.Modal('#editCycleModal')
-        editCycleModal.show();
-        
-    })
+        $.ajax({
+            url: 'ajax.php', 
+            type: 'POST',
+            data: {
+                action: 'getCycle',
+                sensor_id: sensorId
+            },
+            dataType: 'json', 
+            beforeSend: function(){
+                $('#configureCycleButton').prop('disabled', true).text('Loading...');
+            },
+            success: function(response){
+                if(response.success){
+                    const data = response.data;
+
+                    $('#edit_sensor_cycle').val(data.sensor_id);
+
+                    data.cycles.forEach((cycle, index) => {
+                        const cycleNumber = index + 1;
+
+                        $(`#edit_cycle_${cycleNumber}_interval`).val(cycle.interval_seconds);
+
+                        $(`#edit_cycle_${cycleNumber}_duration`).val(cycle.duration_minutes);
+                    });
+
+                    for(let i = data.cycles.length + 1; i <= 3; i++){
+                        $(`#edit_cycle_${i}_interval`).val('');
+                        $(`#edit_cycle_${i}_duration`).val('');
+                    }
+
+                    const editCycleModal = new bootstrap.Modal('#editCycleModal');
+                    editCycleModal.show();
+                } else {
+                    alert('No cycles found for the selected sensor.');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.error('AJAX Error:', textStatus, errorThrown);
+                alert('An error occurred while fetching cycle data. Please try again.');
+            },
+            complete: function(){
+                // Re-enable the submit button and reset its text
+                $('#configureCycleButton').prop('disabled', false).text('Submit');
+            }
+        });
+    });
+
 
     $(document).on('click', '.delete-cycle', function() {
             const cycleId = $(this).data('id');

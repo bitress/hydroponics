@@ -108,10 +108,15 @@ if (isset($_POST['action'])){
             $sensorId = isset($_POST['sensor_id']) ? intval($_POST['sensor_id']) : 0;
             $cycle1_interval = isset($_POST['cycle1_interval']) ? intval($_POST['cycle1_interval']) : null;
             $cycle1_duration = isset($_POST['cycle1_duration']) ? intval($_POST['cycle1_duration']) : null;
+            $cycle1_pause = isset($_POST['cycle1_pause']) ? intval($_POST['cycle1_pause']) : null;
+
             $cycle2_interval = isset($_POST['cycle2_interval']) ? intval($_POST['cycle2_interval']) : null;
             $cycle2_duration = isset($_POST['cycle2_duration']) ? intval($_POST['cycle2_duration']) : null;
+            $cycle2_pause = isset($_POST['cycle2_pause']) ? intval($_POST['cycle2_pause']) : null;
+
             $cycle3_interval = isset($_POST['cycle3_interval']) ? intval($_POST['cycle3_interval']) : null;
             $cycle3_duration = isset($_POST['cycle3_duration']) ? intval($_POST['cycle3_duration']) : null;
+            $cycle3_pause = isset($_POST['cycle3_pause']) ? intval($_POST['cycle3_pause']) : null;
 
             if ($sensorId <= 0) {
                 $response['message'] = 'Invalid sensor selected.';
@@ -130,17 +135,20 @@ if (isset($_POST['action'])){
                         [
                             'cycle_number' => 1,
                             'interval_seconds' => $cycle1_interval,
-                            'duration_minutes' => $cycle1_duration
+                            'duration_minutes' => $cycle1_duration,
+                            'pause' => $cycle1_pause
                         ],
                         [
                             'cycle_number' => 2,
                             'interval_seconds' => $cycle2_interval,
-                            'duration_minutes' => $cycle2_duration
+                            'duration_minutes' => $cycle2_duration,
+                            'pause' => $cycle2_pause
                         ],
                         [
                             'cycle_number' => 3,
                             'interval_seconds' => $cycle3_interval,
-                            'duration_minutes' => $cycle3_duration
+                            'duration_minutes' => $cycle3_duration,
+                            'pause' => $cycle3_pause
                         ]
                     ];
 
@@ -159,19 +167,24 @@ if (isset($_POST['action'])){
                             'cycle_id' => isset($existingCycles[0]['cycle_id']) ? $existingCycles[0]['cycle_id'] : null,
                             'cycle_number' => 1,
                             'interval_seconds' => $cycle1_interval,
-                            'duration_minutes' => $cycle1_duration
+                            'duration_minutes' => $cycle1_duration,
+                            'pause' => $cycle1_pause
                         ],
                         [
                             'cycle_id' => isset($existingCycles[1]['cycle_id']) ? $existingCycles[1]['cycle_id'] : null,
                             'cycle_number' => 2,
                             'interval_seconds' => $cycle2_interval,
-                            'duration_minutes' => $cycle2_duration
+                            'duration_minutes' => $cycle2_duration,
+                            'pause' => $cycle2_pause
+
                         ],
                         [
                             'cycle_id' => isset($existingCycles[2]['cycle_id']) ? $existingCycles[2]['cycle_id'] : null,
                             'cycle_number' => 3,
                             'interval_seconds' => $cycle3_interval,
-                            'duration_minutes' => $cycle3_duration
+                            'duration_minutes' => $cycle3_duration,
+                            'pause' => $cycle3_pause
+
                         ]
                     ];
 

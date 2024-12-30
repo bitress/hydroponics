@@ -35,7 +35,6 @@ class Cycles {
                 if (!isset($grouped[$sensorId])) {
                     $grouped[$sensorId] = [
                         'sensor_name' => $row['sensor_name'],
-                        'pause' => $row['pause'],
                         'cycles' => []
                     ];
                 }
@@ -47,6 +46,7 @@ class Cycles {
                         'interval_seconds' => $row['interval_seconds'],
                         'duration_minutes' => $row['duration_minutes'],
                         'is_active' => $row['is_active'],
+                        'pause' => $row['pause'],
                     ];
                 }
             }
@@ -70,7 +70,7 @@ class Cycles {
         $sql = "
             SELECT sensors.id AS sensor_id, sensors.sensor_name AS sensor_name,
                 cycles.cycle_id AS cycle_id, cycles.cycle_number, 
-                cycles.interval_seconds, cycles.duration_minutes
+                cycles.interval_seconds, cycles.duration_minutes, cycles.pause
             FROM sensors
             LEFT JOIN cycles ON sensors.id = cycles.sensor_id
             WHERE sensors.id = :sensor_id
@@ -96,7 +96,8 @@ class Cycles {
                         'cycle_id' => $row['cycle_id'],
                         'cycle_number' => $row['cycle_number'],
                         'interval_seconds' => $row['interval_seconds'],
-                        'duration_minutes' => $row['duration_minutes']
+                        'duration_minutes' => $row['duration_minutes'],
+                        'pause' => $row['pause']
                     ];
                 }
             }
@@ -179,7 +180,7 @@ class Cycles {
         {
             $sql = "
                 UPDATE cycles 
-                SET interval_seconds = :interval_seconds, duration_minutes = :duration_minutes
+                SET interval_seconds = :interval_seconds, duration_minutes = :duration_minutes, pause = :pause
                 WHERE sensor_id = :sensor_id AND cycle_number = :cycle_number
             ";
 
@@ -192,6 +193,7 @@ class Cycles {
                     if (
                         !isset($cycle['cycle_number']) ||
                         !isset($cycle['interval_seconds']) ||
+                        !isset($cycle['pause']) ||
                         !isset($cycle['duration_minutes'])
                     ) {
                         throw new Exception('Invalid cycle data.');
@@ -201,7 +203,8 @@ class Cycles {
                         ':interval_seconds' => $cycle['interval_seconds'],
                         ':duration_minutes' => $cycle['duration_minutes'],
                         ':sensor_id' => $sensorId,
-                        ':cycle_number' => $cycle['cycle_number']
+                        ':cycle_number' => $cycle['cycle_number'],
+                        ':pause' => $cycle['pause']
                     ]);
                 }
 

@@ -41,7 +41,6 @@
                                                     <tr>
                                                         <th>Sensor Name</th>
                                                         <th>Cycles</th>
-                                                        <th>Pause</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -64,6 +63,7 @@
                                                                             <th style="width: 20%;">Cycle Number</th>
                                                                             <th style="width: 40%;">Interval (Seconds)</th>
                                                                             <th style="width: 40%;">Duration (Minutes)</th>
+                                                                            <th style="width: 40%;">Pause (Seconds)</th>
                                                                             <th style="width: 40%;">Status</th>
                                                                         </tr>
                                                                     </thead>
@@ -73,6 +73,7 @@
                                                                                 <td><?= htmlspecialchars($cycle['cycle_number']) ?></td>
                                                                                 <td><?= htmlspecialchars($cycle['interval_seconds']) ?></td>
                                                                                 <td><?= htmlspecialchars($cycle['duration_minutes']) ?></td>
+                                                                                <td><?= htmlspecialchars($cycle['pause']) ?></td>
                                                                                 <td>
                                                                                     <?php if ($cycle['is_active']): ?>
                                                                                         <button class="btn btn-danger btn-sm toggle-cycle-btn" data-action="stop">Stop</button>
@@ -89,7 +90,6 @@
                                                                 <span class="text-muted">No cycles available.</span>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td><?= htmlspecialchars($sensorData['pause']) ?></td>
                                                         <td>
                                                             <div class="btn-group" role="group" aria-label="Group Actions">
                                                                 <button type="button" class="btn btn-primary configure-cycle" data-sensor-id="<?= htmlspecialchars($sensorId) ?>"
@@ -191,6 +191,13 @@
                                                     name="edit_cycle_1_duration" min="1" required
                                                     placeholder="Enter duration in minutes">
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_1_pause" class="form-label">Pause
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_1_pause"
+                                                    name="edit_cycle_1_pause" min="1" required
+                                                    placeholder="Enter pause in seconds">
+                                            </div>
                                         </div>
 
                                     </div>
@@ -215,6 +222,13 @@
                                                     name="edit_cycle_2_duration" min="1" required
                                                     placeholder="Enter duration in minutes">
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="edit_cycle_2_pause" class="form-label">Pause
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_2_pause"
+                                                    name="edit_cycle_2_pause" min="1" required
+                                                    placeholder="Enter pause in seconds">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -234,6 +248,13 @@
                                                 <input type="number" class="form-control" id="edit_cycle_3_duration"
                                                     name="edit_cycle_3_duration" min="1" required
                                                     placeholder="Enter duration in minutes">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="edit_cycle_3_pause" class="form-label">Pause
+                                                    (seconds)</label>
+                                                <input type="number" class="form-control" id="edit_cycle_3_pause"
+                                                    name="edit_cycle_3_pause" min="1" required
+                                                    placeholder="Enter pause in seconds">
                                             </div>
                                         </div>
                                     </div>
@@ -340,10 +361,16 @@
             sensor_id: $('#edit_sensor_cycle').find(":selected").val(),
             cycle1_interval: $('#edit_cycle_1_interval').val(),
             cycle1_duration: $('#edit_cycle_1_duration').val(),
+            cycle1_pause: $('#edit_cycle_1_pause').val(),
+
             cycle2_interval: $('#edit_cycle_2_interval').val(),
             cycle2_duration: $('#edit_cycle_2_duration').val(),
+            cycle2_pause: $('#edit_cycle_2_pause').val(),
+
             cycle3_interval: $('#edit_cycle_3_interval').val(),
             cycle3_duration: $('#edit_cycle_3_duration').val(),
+            cycle3_pause: $('#edit_cycle_3_pause').val(),
+
         };
 
        
@@ -453,11 +480,13 @@
                         $(`#edit_cycle_${cycleNumber}_interval`).val(cycle.interval_seconds);
 
                         $(`#edit_cycle_${cycleNumber}_duration`).val(cycle.duration_minutes);
+                        $(`#edit_cycle_${cycleNumber}_pause`).val(cycle.pause);
                     });
 
                     for(let i = data.cycles.length + 1; i <= 3; i++){
                         $(`#edit_cycle_${i}_interval`).val('');
                         $(`#edit_cycle_${i}_duration`).val('');
+                        $(`#edit_cycle_${i}_pause`).val('');
                     }
 
                     const editCycleModal = new bootstrap.Modal('#editCycleModal');

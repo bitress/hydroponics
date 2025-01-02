@@ -60,6 +60,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="devices.php" class="sidebar-link">
+                        <i class="fa-duotone fa-solid fa-tablet-rugged"></i>                        <span>Devices</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="relays.php" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-light-switch"></i>
                         <span>Configure Relays</span>

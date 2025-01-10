@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sensors - Hydroponics</title>
+    <title>Devices - Hydroponics</title>
 
     <?php include_once 'templates/head-styles.php'; ?>
 
@@ -25,7 +25,7 @@
             </header>
 
             <div class="page-heading">
-                <h3>Sensors</h3>
+                <h3>Devices</h3>
             </div>
             <div class="page-content">
                 <section class="row">
@@ -38,34 +38,34 @@
                                     <div class="card-body">
                                         <div class="d-flex flex-end">
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#addSensorModal">
-                                                Add a Sensor
+                                                data-bs-target="#addDeviceModal">
+                                                Add a Device
                                             </button>
                                         </div>
                                         <div class="table-responsive mt-2">
                                         <table class="table">
                                             <thead>
-                                                <th>Sensor ID</th>
-                                                <th>Sensor Name</th>
+                                                <th>Device ID</th>
+                                                <th>Device Name</th>
                                                 <th>Actions</th>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    $sensorClass = new Sensors();
-                                                    $row = $sensorClass->getSensors();
+                                                    $DeviceClass = new Devices();
+                                                    $row = $DeviceClass->getDevices();
                                                     foreach($row as $res):
                                                 ?>
                                                 <tr>
                                                     <td><?= $res['id'] ?></td>
-                                                    <td><?= $res['sensor_name'] ?></td>
+                                                    <td><?= $res['Device_name'] ?></td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Sensor">
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Device">
                                                                 <i class="fa fa-cogs"></i>
                                                             </button>
                                                             <button type="button" class="btn btn-primary delete-cycle" data-id="<?= $res['id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Sensor">
+                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Device">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>

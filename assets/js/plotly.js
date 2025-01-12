@@ -2,13 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const sensorIds = [1, 2, 3, 4, 5, 6];
     const dateRangeSelect = document.getElementById('dateRangeSelect');
     const chartDiv = document.getElementById('sensor_data_chart');
+    let autoRefreshInterval;
 
-    /**
-     * Function to fetch data for all sensors based on the selected range
-     * Optimized to fetch all sensors in a single request
-     * @param {string} range - The selected date range
-     * @returns {Promise<Object>} - Promise resolving to an object with sensor IDs as keys and their data as values
-     */
     const fetchAllSensorData = (range) => {
         const params = new URLSearchParams();
         params.append('range', range);
@@ -41,60 +36,37 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error(`Error fetching sensor data:`, error);
-                return null; // Return null on error
+                return null;
             });
     };
 
-    /**
-     * Function to create Plotly traces from the grouped sensor data
-     * @param {Object} groupedData - Object with sensor IDs as keys and their data arrays as values
-     * @returns {Array} - Array of Plotly trace objects
-     */
     const createTraces = (groupedData) => {
         const traces = [];
-
         for (const sensorId in groupedData) {
             const sensorData = groupedData[sensorId];
             if (sensorData.length === 0) {
-                continue; // Skip if no data for this sensor
+                continue;
             }
-
-            // Assuming all entries have the same sensor_name
             const sensorName = sensorData[0].sensor_name;
-
-            // Sort data by reading_time ascending
             sensorData.sort((a, b) => a.reading_time - b.reading_time);
-
-            // Extract x and y values
             const x = sensorData.map(d => d.reading_time);
             const y = sensorData.map(d => d.value);
-
-            // Create a trace for this sensor
             const trace = {
                 x: x,
                 y: y,
                 mode: 'lines+markers',
                 name: sensorName
             };
-
             traces.push(trace);
         }
-
         return traces;
     };
 
-    /**
-     * Function to update the chart with new data
-     * @param {string} range - The selected date range
-     */
     const updateChart = (range) => {
-        // Show a loading indicator
-        Plotly.newPlot(chartDiv, [], {title: 'Loading...'});
-        
+        Plotly.newPlot(chartDiv, [], { title: 'Loading...' });
         fetchAllSensorData(range)
             .then(groupedData => {
                 if (!groupedData) {
-                    // Handle error case
                     Plotly.newPlot(chartDiv, [], {
                         title: 'Error fetching data',
                         xaxis: { title: 'Reading Time' },
@@ -102,9 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     return;
                 }
-
                 const traces = createTraces(groupedData);
-
                 if (traces.length === 0) {
                     Plotly.newPlot(chartDiv, [], {
                         title: 'No data available for the selected range',
@@ -113,8 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     return;
                 }
-
-                // Define the layout of the chart
                 const layout = {
                     title: 'Sensor Data Overview',
                     xaxis: {
@@ -131,11 +99,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         y: -0.2
                     },
                     margin: {
-                        b: 150 // Increase bottom margin to accommodate rotated x-axis labels
+                        b: 150
                     }
                 };
-
-                // Render the plot
                 Plotly.newPlot(chartDiv, traces, layout);
             })
             .catch(error => {
@@ -148,13 +114,22 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     };
 
-    // Initial chart load with default range
+    const startAutoRefresh = (range) => {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+        }
+        autoRefreshInterval = setInterval(() => {
+            updateChart(range);
+        }, 10000); // Reload every 10 seconds
+    };
+
     const initialRange = dateRangeSelect.value;
     updateChart(initialRange);
+    startAutoRefresh(initialRange);
 
-    // Event listener for date range selection change
     dateRangeSelect.addEventListener('change', function () {
         const selectedRange = this.value;
         updateChart(selectedRange);
+        startAutoRefresh(selectedRange);
     });
 });

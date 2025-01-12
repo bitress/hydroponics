@@ -11,7 +11,8 @@ class Sensors {
 
     public function getSensors()
     {
-        $sql = "SELECT * FROM sensors";
+        $sql = "SELECT * FROM sensors LEFT JOIN sensor_device_mapping ON sensor_device_mapping.sensor_id = sensors.id 
+                LEFT JOIN devices ON devices.device_id = sensor_device_mapping.device_id";
         $stmt = $this->db->query($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

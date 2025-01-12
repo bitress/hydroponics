@@ -49,6 +49,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="camera-logs.php" class="sidebar-link">
+                        <i class="far fa-cctv"></i>                       <span>Camera Logs</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="cycles.php" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-arrows-spin"></i>                        <span>Cycles</span>
                     </a>

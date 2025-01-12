@@ -56,15 +56,15 @@
                                                     foreach($row as $res):
                                                 ?>
                                                 <tr>
-                                                    <td><?= $res['id'] ?></td>
-                                                    <td><?= $res['Device_name'] ?></td>
+                                                    <td><?= $res['device_id'] ?></td>
+                                                    <td><?= $res['device_name'] ?></td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['id'] ?>"
+                                                            <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['device_id'] ?>"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Device">
                                                                 <i class="fa fa-cogs"></i>
                                                             </button>
-                                                            <button type="button" class="btn btn-primary delete-cycle" data-id="<?= $res['id'] ?>"
+                                                            <button type="button" class="btn btn-primary delete-cycle" data-id="<?= $res['device_id'] ?>"
                                                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Device">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>

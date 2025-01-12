@@ -20,3 +20,5 @@ href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/ic
 <link rel="stylesheet" href="https://atugatran.github.io/FontAwesome6Pro/css/all.min.css" >
 
 <link rel="stylesheet" href="assets/css/custom.css" />
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>

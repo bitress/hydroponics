@@ -47,7 +47,6 @@
                                             <thead>
                                                 <th>Sensor ID</th>
                                                 <th>Sensor Name</th>
-                                                <th>Sensor Threshold</th>
                                                 <th>Sensor Control</th>
                                                 <th>Actions</th>
                                             </thead>
@@ -60,7 +59,6 @@
                                                 <tr>
                                                     <td><?= $res['id'] ?></td>
                                                     <td><?= $res['sensor_name'] ?></td>
-                                                    <td><?= $res['threshold'] ?></td>
                                                     <td><?= $res['device_name'] ?></td>
                                                     <td>
                                                         <div class="btn-group">

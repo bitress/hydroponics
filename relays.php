@@ -46,10 +46,9 @@
                                         <table class="table">
                                             <thead>
                                                 <th>Relay ID</th>
-                                                <th>Relay Name</th>
+                                                <th>Device Name</th>
                                                 <th>Relay Status</th>
                                                 <th>Control Mode</th>
-                                                <th>GPIO Pin</th>
                                                 <th>Actions</th>
                                             </thead>
                                             <tbody>
@@ -60,7 +59,7 @@
                                                 ?>
                                                 <tr>
                                                     <td><?= $res['id'] ?></td>
-                                                    <td><?= $res['relay_name'] ?></td>
+                                                    <td><?= $res['device_name'] ?></td>
                                                     <td><?= $res['relay_status'] ?></td>
                                                     <td>
                                                         <select class="form-control control-mode" data-id="<?= $res['id'] ?>">
@@ -68,7 +67,6 @@
                                                             <option value="manual" <?= $res['control_mode'] == 'manual' ? 'selected' : '' ?>>Manual</option>
                                                         </select>
                                                     </td>
-                                                    <td><?= $res['gpio'] ?></td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['id'] ?>"

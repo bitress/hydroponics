@@ -61,7 +61,7 @@ class Relay {
      * @return bool
      */
     public function updateStatus($relay_id, $status) {
-        $sql = "UPDATE relays SET relay_status = :status, control_mode = 'manual', updated_at = NOW() WHERE id = :id";
+        $sql = "UPDATE relays SET relay_status = :status, control_mode = 'manual', updated_at = NOW()  WHERE id = :id";
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
@@ -81,7 +81,7 @@ class Relay {
      * @return array|null
      */
     public function getRelayById($relay_id) {
-        $sql = "SELECT * FROM relays WHERE id = :id";
+        $sql = "SELECT * FROM relays INNER JOIN devices ON devices.device_id = relays.id WHERE id = :id";
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id', $relay_id, PDO::PARAM_INT);
@@ -97,7 +97,7 @@ class Relay {
 
     public function fetchAll()
     {
-        $sql = "SELECT * FROM relays";
+        $sql = "SELECT * FROM relays INNER JOIN devices ON devices.device_id = relays.id";
         try {
             $stmt = $this->db->query($sql);
             $stmt->execute();

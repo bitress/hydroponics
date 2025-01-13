@@ -70,6 +70,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="mapping.php" class="sidebar-link">
+                        <i class="fa-duotone fa-light fa-map-pin"></i>
+                                           <span>Mapping</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="relays.php" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-light-switch"></i>
                         <span>Configure Relays</span>

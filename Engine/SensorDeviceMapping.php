@@ -20,13 +20,13 @@ class SensorDeviceMapping
      * @param int $priority
      * @return bool
      */
-    public function addMapping($sensorId, $deviceId, $threshold, $thresholdType, $actionType, $status = 1, $priority = 1)
+    public function addMapping($sensorId, $deviceId, $threshold, $status = 1, $priority = 1)
     {
         $query = "INSERT INTO sensor_device_mapping 
-                  (sensor_id, device_id, threshold, threshold_type, action_type, status, priority, created_at, updated_at)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+                  (`sensor_id`, `device_id`, `threshold`, `status`, `priority`, created_at, updated_at)
+                  VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
         $stmt = $this->db->prepare($query);
-        return $stmt->execute([$sensorId, $deviceId, $threshold, $thresholdType, $actionType, $status, $priority]);
+        return $stmt->execute([$sensorId, $deviceId, $threshold, $status, $priority]);
     }
 
     /**
@@ -87,7 +87,7 @@ class SensorDeviceMapping
             $params[] = $deviceId;
         }
 
-        $query = "SELECT * FROM sensor_device_mapping JOIN devices ON devices.device_id = sensor_device_mapping.device_id JOIN sensors ON sensors.id = sensor_device_mapping.sensor_id INNER JOIN sensor_thresholds ON sensor_thresholds.sensor_id = sensor_device_mapping.sensor_id";
+        $query = "SELECT * FROM sensor_device_mapping JOIN devices ON devices.device_id = sensor_device_mapping.device_id JOIN sensors ON sensors.id = sensor_device_mapping.sensor_id ";
         if (count($conditions) > 0) {
             $query .= " WHERE " . implode(" AND ", $conditions);
         }
@@ -163,14 +163,30 @@ class SensorDeviceMapping
     }
 
     /**
-     * Get all sensors.
+     * Get sensors.
      * @return array
      */
-    public function getAllSensors()
+    public function getSensors()
     {
-        $query = "SELECT * FROM sensors";
+        $query = "
+            SELECT * FROM sensors WHERE sensors.id NOT IN ( SELECT sensor_id FROM sensor_device_mapping );
+        ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    /**
+     * Get sensors.
+     * @return array
+     */
+    public function getAllSensors()
+    {
+        $query = "
+            SELECT * FROM sensors
+        ";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }

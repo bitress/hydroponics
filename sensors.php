@@ -37,10 +37,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex flex-end">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#addSensorModal">
-                                                Add a Sensor
-                                            </button>
+                                          
                                         </div>
                                         <div class="table-responsive mt-2">
                                         <table class="table">
@@ -48,7 +45,6 @@
                                                 <th>Sensor ID</th>
                                                 <th>Sensor Name</th>
                                                 <th>Sensor Control</th>
-                                                <th>Actions</th>
                                             </thead>
                                             <tbody>
                                                 <?php
@@ -60,18 +56,7 @@
                                                     <td><?= $res['id'] ?></td>
                                                     <td><?= $res['sensor_name'] ?></td>
                                                     <td><?= $res['device_name'] ?></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Sensor">
-                                                                <i class="fa fa-cogs"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary delete-cycle" data-id="<?= $res['id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Sensor">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                                   
                                                 </tr>
                                                 <?php endforeach; ?>
                                             </tbody>

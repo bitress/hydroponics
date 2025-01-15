@@ -50,7 +50,7 @@
                                                     <th>Sensor ID</th>
                                                     <th>Device ID</th>
                                                     <th>Threshold</th>
-                                                    <th>Activation Time</th>
+                                                    <th>Actions</th>
                                                 </thead>
                                                 <tbody>
                                                     <?php
@@ -61,9 +61,26 @@
                                                     <tr>
                                                         <td><?= $mapping['sensor_name'] ?></td>
                                                         <td><?= $mapping['device_name'] ?></td>
-                                                        <td><?= $mapping['value'] ?></td>
-                                                        <td><?= $mapping['activation_time'] ?></td>
-                                                    </tr>
+                                                        <td><?= $mapping['threshold'] ?></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <!-- Configure Button (Edit) -->
+                                                                <button type="button" class="btn btn-primary configure-mapping" data-id="<?= $mapping['mapping_id'] ?>"
+                                                                    data-sensor="<?= $mapping['sensor_id'] ?>"
+                                                                    data-device="<?= $mapping['device_id'] ?>"
+                                                                    data-threshold="<?= $mapping['threshold'] ?>"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Mapping">
+                                                                    <i class="fa fa-cogs"></i>
+                                                                </button>
+                                                                
+                                                                <!-- Delete Button -->
+                                                                <button type="button" class="btn btn-danger delete-mapping" data-id="<?= $mapping['mapping_id'] ?>"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Mapping">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                            </td>
+                                                        </tr>
                                                     <?php endforeach; ?>
                                                 </tbody>
                                             </table>
@@ -134,10 +151,6 @@
                             <label for="threshold" class="form-label">Threshold</label>
                             <input type="text" class="form-control" id="threshold" name="threshold" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="activationTime" class="form-label">Activation Time</label>
-                            <input type="text" class="form-control" id="activationTime" name="activationTime" required>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -149,6 +162,54 @@
     </div>
 
 
+    <div class="modal fade" id="mappingModal" tabindex="-1" aria-labelledby="mappingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mappingModalLabel">Configure Sensor to Device Mapping</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="mappingForm">
+                    <div class="mb-3">
+                        <label for="sensorId" class="form-label">Sensor ID</label>
+                        <select class="form-select" id="sensorId" name="sensorId" required>
+                            <option value="">Select Sensor</option>
+                            <?php
+                                $sensors = $MappingClass->getSensors();
+                                foreach($sensors as $sensor):
+                            ?>
+                            <option value="<?= $sensor['id'] ?>"><?= $sensor['sensor_name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deviceId" class="form-label">Device ID</label>
+                        <select class="form-select" id="deviceId" name="deviceId" required>
+                            <option value="">Select Device</option>
+                            <?php
+                                $devices = $MappingClass->getAllDevices();
+                                foreach($devices as $device):
+                            ?>
+                            <option value="<?= $device['device_id'] ?>"><?= $device['device_name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="threshold" class="form-label">Threshold</label>
+                        <input type="text" class="form-control" id="threshold" name="threshold" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveMapping">Save Mapping</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <?php include_once 'templates/body-scripts.php'; ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -157,6 +218,100 @@
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+
+
+        $(document).ready(function(){
+
+            $('#saveMapping').click(function(){
+                var sensorId = $('#sensorId').val();
+                var deviceId = $('#deviceId').val();
+                var threshold = $('#threshold').val();
+
+                $.ajax({
+                    url: 'ajax.php',
+                    method: 'POST',
+                    data: {
+                        action: 'addMapping',
+                        sensorId: sensorId,
+                        deviceId: deviceId,
+                        threshold: threshold
+                    },
+                    success: function(response){
+                        if(response == 'success'){
+                            alert('Mapping added successfully');
+                            location.reload();
+                        } else {
+                            alert('Failed to add mapping');
+                        }
+                    }
+                });
+            });
+        })
+
+        $(document).ready(function() {
+        // Configure (Edit) button click handler
+        $('.configure-mapping').click(function() {
+            var mappingId = $(this).data('id');
+            var sensorId = $(this).data('sensor');
+            var deviceId = $(this).data('device');
+            var threshold = $(this).data('threshold');
+
+            // Set modal fields with current data
+            $('#sensorId').val(sensorId);
+            $('#deviceId').val(deviceId);
+            $('#threshold').val(threshold);
+
+            // Update form action to edit mapping
+            $('#saveMapping').off('click').on('click', function() {
+                $.ajax({
+                    url: 'ajax.php',
+                    method: 'POST',
+                    data: {
+                        action: 'updateMapping',
+                        mappingId: mappingId,
+                        sensorId: $('#sensorId').val(),
+                        deviceId: $('#deviceId').val(),
+                        threshold: $('#threshold').val()
+                    },
+                    success: function(response) {
+                        if (response === 'success') {
+                            alert('Mapping updated successfully');
+                            location.reload();
+                        } else {
+                            alert('Failed to update mapping');
+                        }
+                    }
+                });
+            });
+
+            // Show the modal
+            $('#mappingModal').modal('show');
+        });
+
+        // Delete button click handler
+        $('.delete-mapping').click(function() {
+            var mappingId = $(this).data('id');
+
+            if (confirm('Are you sure you want to delete this mapping?')) {
+                $.ajax({
+                    url: 'ajax.php',
+                    method: 'POST',
+                    data: {
+                        action: 'deleteMapping',
+                        mappingId: mappingId
+                    },
+                    success: function(response) {
+                        if (response === 'success') {
+                            alert('Mapping deleted successfully');
+                            location.reload();
+                        } else {
+                            alert('Failed to delete mapping');
+                        }
+                    }
+                });
+            }
+        });
+    });
 
 
     </script>

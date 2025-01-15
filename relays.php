@@ -36,12 +36,7 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="d-flex flex-end">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#addRelayModal">
-                                                Add a Relay
-                                            </button>
-                                        </div>
+                                        
                                         <div class="table-responsive mt-2">
                                         <table class="table">
                                             <thead>
@@ -49,7 +44,6 @@
                                                 <th>Device Name</th>
                                                 <th>Relay Status</th>
                                                 <th>Control Mode</th>
-                                                <th>Actions</th>
                                             </thead>
                                             <tbody>
                                                 <?php
@@ -67,18 +61,7 @@
                                                             <option value="manual" <?= $res['control_mode'] == 'manual' ? 'selected' : '' ?>>Manual</option>
                                                         </select>
                                                     </td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Relay">
-                                                                <i class="fa fa-cogs"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary delete-cycle" data-id="<?= $res['id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Relay">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                                   
                                                 </tr>
                                                 <?php endforeach; ?>
                                             </tbody>

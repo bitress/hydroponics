@@ -60,18 +60,12 @@ if (isset($_POST['delete_device'])) {
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div class="d-flex flex-end">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#addDeviceModal">
-                                                Add a Device
-                                            </button>
-                                        </div>
+                                       
                                         <div class="table-responsive mt-2">
                                         <table class="table">
                                             <thead>
                                                 <th>Device ID</th>
                                                 <th>Device Name</th>
-                                                <th>Actions</th>
                                             </thead>
                                             <tbody>
                                                 <?php
@@ -82,18 +76,6 @@ if (isset($_POST['delete_device'])) {
                                                 <tr>
                                                     <td><?= $res['device_id'] ?></td>
                                                     <td><?= $res['device_name'] ?></td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-primary configure-cycle" data-id="<?= $res['device_id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Configure Device">
-                                                                <i class="fa fa-cogs"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary delete-cycle" data-id="<?= $res['device_id'] ?>"
-                                                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Device">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
                                                 </tr>
                                                 <?php endforeach; ?>
                                             </tbody>

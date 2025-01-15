@@ -4,6 +4,7 @@ include_once 'init.php';
 
 if (isset($_POST['action'])){
     $action = $_POST['action'];
+    $schedule = new Schedule();
     switch($action){
         case 'addRelay':
             $relay = new Relay();
@@ -72,7 +73,7 @@ if (isset($_POST['action'])){
             }
 
             $cycle_obj = new Cycles();
-            $inserted= $cycle_obj->create($sensor_cycle, $cycles);
+            $inserted= $cycle_obj->createCycles($sensor_cycle, $cycles);
             if ($inserted) {
                 echo json_encode(['status' => 'success', 'message' => 'Data inserted successfully']);
             }
@@ -234,8 +235,142 @@ if (isset($_POST['action'])){
                 echo json_encode($response);
 
                 break;
+        case 'readSchedules':
+            $schedules = $schedule->readSchedules();
+            echo json_encode(['success' => true, 'data' => $schedules]);
+            break;
+
+        case 'updateSchedule':
+            $data = [
+                'schedule_id' => $_POST['schedule_id'],
+                'target_type' => $_POST['target_type'],
+                'target_id' => $_POST['target_id'],
+                'start_time' => $_POST['start_time'],
+                'end_time' => $_POST['end_time'],
+                'recurrence' => $_POST['recurrence'],
+                'is_active' => $_POST['is_active'],
+            ];
+
+            $rows = $schedule->updateSchedule($data);
+            echo json_encode(['success' => true, 'affected_rows' => $rows]);
+            break;
+
+        case 'deleteSchedule':
+            $scheduleId = $_POST['schedule_id'];
+
+            $rows = $schedule->deleteSchedule($scheduleId);
+            echo json_encode(['success' => true, 'affected_rows' => $rows]);
+            break;
+        case 'addMapping':
+            $sensorId = $_POST['sensorId'];
+            $deviceId = $_POST['deviceId'];
+            $threshold = $_POST['threshold'];
+
+            $MappingClass = new SensorDeviceMapping();
+            $MappingClass->addMapping($sensorId, $deviceId, $threshold);
+            break;
+        case 'updateMapping':
+            $mappingId = $_POST['mappingId'];
+            $sensorId = $_POST['sensorId'];
+            $deviceId = $_POST['deviceId'];
+            $threshold = $_POST['threshold'];
+
+            // Your database update query here
+            $query = "UPDATE sensor_device_mapping SET sensor_id = ?, device_id = ?, threshold = ? WHERE mapping_id = ?";
+            $stmt = $db->prepare($query);
+            $stmt->execute([$sensorId, $deviceId, $threshold, $mappingId]);
+
+            echo 'success';
+            break;
     
-    
+        case 'deleteMapping':
+            $mappingId = $_POST['mappingId'];
+
+            // Your database delete query here
+            $query = "DELETE FROM sensor_device_mapping WHERE mapping_id = ?";
+            $stmt = $db->prepare($query);
+            $stmt->execute([$mappingId]);
+
+            echo 'success';
+            break;
+        case 'createSchedule':
+                // Get the form data
+            $targetType = $_POST['targetType'];
+            $targetId = $_POST['targetId'];
+            $recurrence = $_POST['recurrence'];
+            $isActive = isset($_POST['isActive']) ? 1 : 0;
+            $startTime = $_POST['startTime'];
+            $endTime = $_POST['endTime'];
+
+            // Prepare the INSERT statement for the `schedules` table
+            $sql_schedule = "INSERT INTO schedules (target_type, target_id, recurrence, is_active)
+                            VALUES (:targetType, :targetId, :recurrence, :isActive)";
+            
+            try {
+                // Prepare and execute the query
+                $stmt_schedule = $db->prepare($sql_schedule);
+                $stmt_schedule->execute([
+                    ':targetType' => $targetType,
+                    ':targetId' => $targetId,
+                    ':recurrence' => $recurrence,
+                    ':isActive' => $isActive
+                ]);
+
+                // Get the last inserted schedule ID
+                $schedule_id = $db->lastInsertId();
+
+                // Handle time-related data based on recurrence type
+                if ($recurrence == 'daily' || $recurrence == 'weekly' || $recurrence == 'monthly' || $recurrence == 'interval' || $recurrence == 'specific_dates') {
+                    // Process specific recurrence cases
+                    if ($recurrence == 'weekly') {
+                        $daysOfWeek = isset($_POST['daysOfWeek']) ? $_POST['daysOfWeek'] : [];
+                        foreach ($daysOfWeek as $day) {
+                            // Insert each day into `schedule_times`
+                            $sql_schedule_times = "INSERT INTO schedule_times (schedule_id, start_time, end_time, day_of_week) 
+                                                VALUES (:schedule_id, :start_time, :end_time, :day_of_week)";
+                            $stmt_schedule_times = $db->prepare($sql_schedule_times);
+                            $stmt_schedule_times->execute([
+                                ':schedule_id' => $schedule_id,
+                                ':start_time' => $startTime,
+                                ':end_time' => $endTime,
+                                ':day_of_week' => $day
+                            ]);
+                        }
+                    } elseif ($recurrence == 'specific_dates') {
+                        $specificDates = isset($_POST['specificDates']) ? $_POST['specificDates'] : [];
+                        $dates = explode(',', $specificDates);
+                        foreach ($dates as $date) {
+                            $date = trim($date);
+                            $sql_schedule_times = "INSERT INTO schedule_times (schedule_id, start_time, end_time, specific_date) 
+                                                VALUES (:schedule_id, :start_time, :end_time, :specific_date)";
+                            $stmt_schedule_times = $db->prepare($sql_schedule_times);
+                            $stmt_schedule_times->execute([
+                                ':schedule_id' => $schedule_id,
+                                ':start_time' => $startTime,
+                                ':end_time' => $endTime,
+                                ':specific_date' => $date
+                            ]);
+                        }
+                    } else {
+                        // Handle daily, interval, or other recurrence types
+                        $sql_schedule_times = "INSERT INTO schedule_times (schedule_id, start_time, end_time) 
+                                            VALUES (:schedule_id, :start_time, :end_time)";
+                        $stmt_schedule_times = $db->prepare($sql_schedule_times);
+                        $stmt_schedule_times->execute([
+                            ':schedule_id' => $schedule_id,
+                            ':start_time' => $startTime,
+                            ':end_time' => $endTime
+                        ]);
+                    }
+                }
+
+                // Return a success response
+                echo json_encode(['success' => true]);
+            } catch (PDOException $e) {
+                // Return an error response if there's an issue with the database
+                echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+            }
+            break;
         default:
             break;
     }

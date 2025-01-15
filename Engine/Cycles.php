@@ -134,8 +134,8 @@ class Cycles {
         public function createCycles(int $sensorId, array $cycles): bool
         {
             $sql = "
-                INSERT INTO cycles (sensor_id, cycle_number, interval_seconds, duration_minutes)
-                VALUES (:sensor_id, :cycle_number, :interval_seconds, :duration_minutes)
+                INSERT INTO cycles (sensor_id, cycle_number, interval_seconds, duration_minutes, pause)
+                VALUES (:sensor_id, :cycle_number, :interval_seconds, :duration_minutes, :pause)
             ";
 
             try {
@@ -147,7 +147,8 @@ class Cycles {
                     if (
                         !isset($cycle['cycle_number']) ||
                         !isset($cycle['interval_seconds']) ||
-                        !isset($cycle['duration_minutes'])
+                        !isset($cycle['duration_minutes']) ||
+                        !isset($cycle['pause'])
                     ) {
                         throw new Exception('Invalid cycle data.');
                     }
@@ -156,7 +157,8 @@ class Cycles {
                         ':sensor_id' => $sensorId,
                         ':cycle_number' => $cycle['cycle_number'],
                         ':interval_seconds' => $cycle['interval_seconds'],
-                        ':duration_minutes' => $cycle['duration_minutes']
+                        ':duration_minutes' => $cycle['duration_minutes'],
+                        ':pause' => $cycle['pause'],
                     ]);
                 }
 

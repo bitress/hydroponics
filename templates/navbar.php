@@ -53,40 +53,53 @@
                         <i class="far fa-cctv"></i>                       <span>Camera Logs</span>
                     </a>
                 </li>
+
+              
                 <li class="sidebar-item">
-                    <a href="cycles.php" class="sidebar-link">
-                        <i class="fa-duotone fa-solid fa-arrows-spin"></i>                        <span>Cycles</span>
+                    <a href="schedule.php" class="sidebar-link">
+                        <i class="fad fa-clipboard-list"></i>                        <span>Schedule</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="sensors.php" class="sidebar-link">
-                        <i class="fa-duotone fa-solid fa-sensor"></i>                        
-                        <span>Sensors</span>
-                    </a>
-                </li>
+              
                 <li class="sidebar-item">
                     <a href="devices.php" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-tablet-rugged"></i>                        <span>Devices</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="mapping.php" class="sidebar-link">
-                        <i class="fa-duotone fa-light fa-map-pin"></i>
-                                           <span>Mapping</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="relays.php" class="sidebar-link">
+
+                <li class="sidebar-item has-sub">
+                    <a href="#" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-light-switch"></i>
-                        <span>Configure Relays</span>
+                        <span>Sensors</span>
                     </a>
+                    <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="cycles.php" class="submenu-link">Cycles</a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="sensors.php" class="submenu-link">Configure Sensors
+                            </a>
+                        </li>
+                        <li class="submenu-item">
+                            <a href="mapping.php" class="submenu-link">Mapping
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
                 <li class="sidebar-item has-sub">
                     <a href="#" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-light-switch"></i>
                         <span>Relays</span>
                     </a>
                     <ul class="submenu">
+                        <li class="submenu-item">
+                            <a href="relays.php" class="submenu-link">
+                                <i class="fa-duotone fa-solid fa-light-switch"></i>
+                                <span>Configure Relays</span>
+                            </a>
+                        </li>
+                        
                         <li class="submenu-item">
                             <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
                                 <i class="fa-solid fa-lightbulb"></i>

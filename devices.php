@@ -1,3 +1,27 @@
+<?php
+include_once 'init.php';
+$DeviceClass = new Devices();
+if (isset($_POST['add_device'])) {
+    $deviceName = $_POST['device_name'];
+    $DeviceClass->createDevice($deviceName);
+    header("Location: devices.php"); // redirect after adding
+}
+
+if (isset($_POST['update_device'])) {
+    $deviceId = $_POST['device_id'];
+    $deviceName = $_POST['device_name'];
+    $DeviceClass->updateDevice($deviceId, $deviceName);
+    header("Location: devices.php"); // redirect after updating
+}
+
+if (isset($_POST['delete_device'])) {
+    $deviceId = $_POST['device_id'];
+    $DeviceClass->deleteDevice($deviceId);
+    header("Location: devices.php"); // redirect after deletion
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,7 +129,71 @@
     </div>
 
 
+<!-- Add Device Form -->
+<div class="modal fade" id="addDeviceModal" tabindex="-1" aria-labelledby="addDeviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="devices.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDeviceModalLabel">Add a Device</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="device_name" class="form-control" placeholder="Enter Device Name" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="add_device" class="btn btn-primary">Add Device</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+
+<!-- Update Device Modal -->
+<div class="modal fade" id="updateDeviceModal" tabindex="-1" aria-labelledby="updateDeviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="devices.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateDeviceModalLabel">Update Device</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="device_id" id="updateDeviceId">
+                    <input type="text" name="device_name" id="updateDeviceName" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="update_device" class="btn btn-primary">Update Device</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteDeviceModal" tabindex="-1" aria-labelledby="deleteDeviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="devices.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteDeviceModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this device?
+                    <input type="hidden" name="device_id" id="deleteDeviceId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="delete_device" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
     <?php include_once 'templates/body-scripts.php'; ?>
@@ -116,6 +204,28 @@
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
         });
+
+        document.querySelectorAll('.configure-cycle').forEach(button => {
+    button.addEventListener('click', function() {
+        var deviceId = this.getAttribute('data-id');
+        fetch(`getDeviceDetails.php?device_id=${deviceId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('updateDeviceId').value = data.device_id;
+                document.getElementById('updateDeviceName').value = data.device_name;
+                new bootstrap.Modal(document.getElementById('updateDeviceModal')).show();
+            });
+    });
+});
+
+document.querySelectorAll('.delete-cycle').forEach(button => {
+        button.addEventListener('click', function() {
+            var deviceId = this.getAttribute('data-id');
+            document.getElementById('deleteDeviceId').value = deviceId;
+        });
+    });
+
+
 
 
     </script>

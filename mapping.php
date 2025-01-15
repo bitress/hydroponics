@@ -33,9 +33,9 @@
                     <div class="container">
 
 
-                        <div class="row mt-4">
+                        <div class="row">
                             <div class="col-md-12">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mappingModal">
+                                <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#mappingModal">
                                     Add New Mapping
                                 </button>
                             </div>

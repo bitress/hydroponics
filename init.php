@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ALL); 
 include_once 'config/Configuration.php';
 
 spl_autoload_register(function($class){

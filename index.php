@@ -19,6 +19,7 @@
       let tank2_temp_data = <?= $sensor->fetchLatestSensorDataJSON(4); ?>;
       let water_level_data = <?= $sensor->fetchLatestSensorDataJSON(5); ?>;
       let light_data = <?= $sensor->fetchLatestSensorDataJSON(6); ?>;
+      let environment_temperature_value = <?= $sensor->fetchLatestSensorDataJSON(8); ?>;
 
     </script>
   </head>
@@ -110,7 +111,7 @@
                     </div>
                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                       <h6 class="text-muted font-semibold">Environment Temperature</h6>
-                      <h6 class="font-extrabold mb-0"><span id="temperature_value"></span></h6>
+                      <h6 class="font-extrabold mb-0"><span id="environment_temperature_value"></span></h6>
                     </div>
                   </div>
                 </div>
@@ -233,6 +234,7 @@
       document.getElementById('tank2_temp_value').innerText = tank2_temp_data[0]?.value || 'N/A';
       document.getElementById('water_level_value').innerText = water_level_data[0]?.value || 'N/A';
       document.getElementById('light_intensity_value').innerText = light_data[0]?.value || 'N/A';
+      document.getElementById('environment_temperature_value').innerText = environment_temperature_value[0]?.value || 'N/A';
      </script>
   </body>
 </html>

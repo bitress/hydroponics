@@ -211,6 +211,36 @@
                 </div>
               </div>
 
+              <!-- Environment Temperature Logs (Sensor ID=6) -->
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="card-title">Environment Temperature Logs</div>
+                  <div class="table-responsive">
+                    <table class="table" id="env_temp_logs">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Sensor Value</th>
+                          <th scope="col">Reading Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $data = $sensor->getLatestSensorData(8);
+                          foreach ($data as $res):
+                        ?>
+                          <tr>
+                            <th scope="row"><?= $res['id'] ?></th>
+                            <td><?= $res['value'] ?></td>
+                            <td><?= $res['reading_time'] ?></td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </section>
         </div>
@@ -257,6 +287,10 @@
         fixedHeight: true,
       });
       const dataTableLight = new simpleDatatables.DataTable("#light_intensity_logs", {
+        searchable: true,
+        fixedHeight: true,
+      });
+      const env_temp_logs = new simpleDatatables.DataTable("#env_temp_logs", {
         searchable: true,
         fixedHeight: true,
       });

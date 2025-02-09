@@ -54,12 +54,12 @@
                     </a>
                 </li>
 
-              
+              <!--
                 <li class="sidebar-item">
                     <a href="schedule.php" class="sidebar-link">
                         <i class="fad fa-clipboard-list"></i>                        <span>Schedule</span>
                     </a>
-                </li>
+                </li>-->
               
                 <li class="sidebar-item">
                     <a href="devices.php" class="sidebar-link">

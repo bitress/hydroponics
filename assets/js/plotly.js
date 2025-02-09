@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         autoRefreshInterval = setInterval(() => {
             updateChart(range);
-        }, 300000); // Reload every 10 seconds
+        }, 10000); // Reload every 10 seconds
     };
 
     const initialRange = dateRangeSelect.value;

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const sensorIds = [1, 2, 3, 4, 5, 6, 8];
+    const sensorIds = [1, 3, 4, 5, 6, 8, 11];
     const dateRangeSelect = document.getElementById('dateRangeSelect');
     const chartDiv = document.getElementById('sensor_data_chart');
     let autoRefreshInterval;

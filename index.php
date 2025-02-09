@@ -14,7 +14,7 @@
 
     <script>
       let ph_data = <?= $sensor->fetchLatestSensorDataJSON(1); ?>;
-      let ph_temp_data = <?= $sensor->fetchLatestSensorDataJSON(2); ?>;
+      let humidity_data = <?= $sensor->fetchLatestSensorDataJSON(11); ?>;
       let tank1_temp_data = <?= $sensor->fetchLatestSensorDataJSON(3); ?>;
       let tank2_temp_data = <?= $sensor->fetchLatestSensorDataJSON(4); ?>;
       let water_level_data = <?= $sensor->fetchLatestSensorDataJSON(5); ?>;
@@ -74,8 +74,8 @@
                       </div>
                     </div>
                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                      <h6 class="text-muted font-semibold">PH Level Temperature</h6>
-                      <h6 class="font-extrabold mb-0"><span id="ph_temp_value"></span></h6>
+                      <h6 class="text-muted font-semibold">Ambient Humidity</h6>
+                      <h6 class="font-extrabold mb-0"><span id="humidity_value"></span></h6>
                     </div>
                   </div>
                 </div>
@@ -229,7 +229,7 @@
  
      <script>
       document.getElementById('ph_level_value').innerText = ph_data[0]?.value || 'N/A';
-      document.getElementById('ph_temp_value').innerText = ph_temp_data[0]?.value || 'N/A';
+      document.getElementById('humidity_value').innerText = humidity_data[0]?.value || 'N/A';
       document.getElementById('tank1_temp_value').innerText = tank1_temp_data[0]?.value || 'N/A';
       document.getElementById('tank2_temp_value').innerText = tank2_temp_data[0]?.value || 'N/A';
       document.getElementById('water_level_value').innerText = water_level_data[0]?.value || 'N/A';

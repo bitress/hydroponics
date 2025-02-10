@@ -63,14 +63,14 @@
               
                 <li class="sidebar-item">
                     <a href="devices.php" class="sidebar-link">
-                        <i class="fa-duotone fa-solid fa-tablet-rugged"></i>                        <span>Devices</span>
+                        <i class="fa-duotone fa-solid fa-tablet-rugged"></i>                        <span>Actuators</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item has-sub">
                     <a href="#" class="sidebar-link">
                         <i class="fa-duotone fa-solid fa-light-switch"></i>
-                        <span>Sensors</span>
+                        <span>Devices</span>
                     </a>
                     <ul class="submenu">
                         <li class="submenu-item">

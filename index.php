@@ -20,7 +20,7 @@
     let tank2_temp_data = <?= $sensor->fetchLatestSensorDataJSON(4); ?>;
     let water_level_data = <?= $sensor->fetchLatestSensorDataJSON(5); ?>;
     let light_data = <?= $sensor->fetchLatestSensorDataJSON(6); ?>;
-    let environment_temperature_value = <?= $sensor->fetchLatestSensorDataJSON(8); ?>;
+    let environment_temperature_value = <?= $sensor->fetchLatestSensorDataJSON(4); ?>;
     </script>
 </head>
 
@@ -64,7 +64,8 @@
                                                 </div>
                                                 <div class="mt-2">
                                                     <small class="text-muted">Predicted pH Level in 3 days:
-                                                        <strong><span id="predicted_ph_level">Acidic</span></strong></small>
+                                                        <strong><span
+                                                                id="predicted_ph_level">Acidic</span></strong></small>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,13 +247,12 @@
     <script src="assets/js/plotly.js"></script>
 
     <script>
-
-fetch('http://139.99.97.250:5000/predict')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("predicted_ph_level").textContent = data.status;
-    })
-    .catch(error => console.error('Error fetching data:', error));
+    fetch('http://139.99.97.250:5000/predict')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("predicted_ph_level").textContent = data.status;
+        })
+        .catch(error => console.error('Error fetching data:', error));
 
     // Function to update the status based on value ranges
     function updateStatus(elementId, value, statusRanges) {

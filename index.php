@@ -64,7 +64,7 @@
                                                 </div>
                                                 <div class="mt-2">
                                                     <small class="text-muted">Predicted pH Level in 3 days:
-                                                        <strong>Acidic</strong></small>
+                                                        <strong><span id="predicted_ph_level">Acidic</span></strong></small>
                                                 </div>
                                             </div>
                                         </div>
@@ -246,6 +246,14 @@
     <script src="assets/js/plotly.js"></script>
 
     <script>
+
+fetch('http://139.99.97.250:5000/predict')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("predicted_ph_level").textContent = data.status;
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
     // Function to update the status based on value ranges
     function updateStatus(elementId, value, statusRanges) {
         let statusText = "";

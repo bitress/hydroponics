@@ -59,13 +59,12 @@
                                                 <h5 class="font-weight-extrabold mb-0"><span
                                                         id="ph_level_value">0.0</span></h5>
                                                 <div class="mt-2">
-                                                    <span class="badge bg-danger text-white" id="ph_level_status">Too
-                                                        Acidic</span>
+                                                    <span class="badge bg-danger text-white" id="ph_level_status">Loading...</span>
                                                 </div>
                                                 <div class="mt-2">
                                                     <small class="text-muted">Predicted pH Level in 3 days:
                                                         <strong><span
-                                                                id="predicted_ph_level">Acidic</span></strong></small>
+                                                                id="predicted_ph_level">Loading...</span></strong></small>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,10 +84,10 @@
                                             <div>
                                                 <h6 class="text-muted font-weight-bold mb-1">Relative Humidity</h6>
                                                 <h5 class="font-weight-extrabold mb-0"><span
-                                                        id="humidity_value">50%</span></h5>
+                                                        id="humidity_value">Loading...</span></h5>
                                                 <div class="mt-2">
                                                     <span class="badge bg-warning text-dark"
-                                                        id="humidity_status">Status: Low Humidity</span>
+                                                        id="humidity_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,10 +107,9 @@
                                             <div>
                                                 <h6 class="text-muted font-weight-bold mb-1">Light Intensity Level</h6>
                                                 <h5 class="font-weight-extrabold mb-0"><span
-                                                        id="light_intensity_value">0</span> lx</h5>
+                                                        id="light_intensity_value">Loading...</span> lx</h5>
                                                 <div class="mt-2">
-                                                    <span class="badge bg-warning text-dark" id="light_status">Status:
-                                                        Low</span>
+                                                    <span class="badge bg-warning text-dark" id="light_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -135,7 +133,7 @@
                                                 </h5>
                                                 <div class="mt-2">
                                                     <span class="badge bg-info text-dark"
-                                                        id="ambient_temp_status">Status: Moderate</span>
+                                                        id="ambient_temp_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,8 +156,7 @@
                                                     <span id="tank1_temp_value">22</span> °C
                                                 </h5>
                                                 <div class="mt-2">
-                                                    <span class="badge bg-info text-dark" id="tank_status">Status:
-                                                        Moderate</span>
+                                                    <span class="badge bg-info text-dark" id="tank_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,7 +181,7 @@
                                                 </h5>
                                                 <div class="mt-2">
                                                     <span class="badge bg-info text-dark"
-                                                        id="water_level_status">Status: Normal</span>
+                                                        id="water_level_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>

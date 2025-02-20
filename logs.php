@@ -226,7 +226,7 @@
                       </thead>
                       <tbody>
                         <?php
-                          $data = $sensor->getLatestSensorData(8);
+                          $data = $sensor->getLatestSensorData(4);
                           foreach ($data as $res):
                         ?>
                           <tr>

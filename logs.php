@@ -61,40 +61,11 @@
                 </div>
               </div>
 
-              <!-- pH Temp Sensor Logs (Sensor ID=2) -->
-              <div class="card mb-2">
-                <div class="card-body">
-                  <div class="card-title">pH Temperature Logs</div>
-                  <div class="table-responsive">
-                    <table class="table" id="ph_temp_sensor_logs">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Sensor Value</th>
-                          <th scope="col">Reading Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                          $data = $sensor->getLatestSensorData(2);
-                          foreach ($data as $res):
-                        ?>
-                          <tr>
-                            <th scope="row"><?= $res['id'] ?></th>
-                            <td><?= $res['value'] ?></td>
-                            <td><?= $res['reading_time'] ?></td>
-                          </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
 
               <!-- Tank 1 Temperature Logs (Sensor ID=3) -->
               <div class="card mb-2">
                 <div class="card-body">
-                  <div class="card-title">Tank 1 Temperature Logs</div>
+                  <div class="card-title">Tank Temperature Logs</div>
                   <div class="table-responsive">
                     <table class="table" id="temp_tank1_logs">
                       <thead>
@@ -121,36 +92,7 @@
                 </div>
               </div>
 
-              <!-- Tank 2 Temperature Logs (Sensor ID=4) -->
-              <div class="card mb-2">
-                <div class="card-body">
-                  <div class="card-title">Tank 2 Temperature Logs</div>
-                  <div class="table-responsive">
-                    <table class="table" id="temp_tank2_logs">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Sensor Value</th>
-                          <th scope="col">Reading Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                          $data = $sensor->getLatestSensorData(4);
-                          foreach ($data as $res):
-                        ?>
-                          <tr>
-                            <th scope="row"><?= $res['id'] ?></th>
-                            <td><?= $res['value'] ?></td>
-                            <td><?= $res['reading_time'] ?></td>
-                          </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
+           
               <!-- Ultrasonic Logs (Sensor ID=5) -->
               <div class="card mb-2">
                 <div class="card-body">
@@ -241,6 +183,36 @@
                 </div>
               </div>
 
+              <!-- Environment Temperature Logs (Sensor ID=6) -->
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="card-title">Humidity Logs</div>
+                  <div class="table-responsive">
+                    <table class="table" id="humid_logs">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Sensor Value</th>
+                          <th scope="col">Reading Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $data = $sensor->getLatestSensorData(11);
+                          foreach ($data as $res):
+                        ?>
+                          <tr>
+                            <th scope="row"><?= $res['id'] ?></th>
+                            <td><?= $res['value'] ?></td>
+                            <td><?= $res['reading_time'] ?></td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </section>
         </div>
@@ -270,18 +242,12 @@
         searchable: true,
         fixedHeight: true,
       });
-      const dataTablePHTemp = new simpleDatatables.DataTable("#ph_temp_sensor_logs", {
-        searchable: true,
-        fixedHeight: true,
-      });
+     
       const dataTableTank1 = new simpleDatatables.DataTable("#temp_tank1_logs", {
         searchable: true,
         fixedHeight: true,
       });
-      const dataTableTank2 = new simpleDatatables.DataTable("#temp_tank2_logs", {
-        searchable: true,
-        fixedHeight: true,
-      });
+   
       const dataTableUltrasonic = new simpleDatatables.DataTable("#ultrasonic_sensor_logs", {
         searchable: true,
         fixedHeight: true,
@@ -291,6 +257,11 @@
         fixedHeight: true,
       });
       const env_temp_logs = new simpleDatatables.DataTable("#env_temp_logs", {
+        searchable: true,
+        fixedHeight: true,
+      });
+
+      const humid_logs = new simpleDatatables.DataTable("#humid_logs", {
         searchable: true,
         fixedHeight: true,
       });

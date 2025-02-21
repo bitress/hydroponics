@@ -100,80 +100,40 @@
                             </a>
                         </li>
                         
-                        <li class="submenu-item">
-                            <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
-                                <i class="fa-solid fa-lightbulb"></i>
-                                <div class="form-check form-switch fs-6">
-                                    <input
-                                        class="form-check-input me-0 relay-toggle"
-                                        type="checkbox"
-                                        id="relay-light"
-                                        data-relay-id="1"
-                                        <?php 
-                                            echo ($relays[0]['relay_status'] == 1) ? 'checked' : ''; 
-                                            echo ($relays[0]['control_mode'] == 'automatic') ? ' disabled' : '';
-                                        ?>
-                                        style="cursor: <?php echo ($relays[0]['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer'; ?>"
-                                    />
-                                    <label class="form-check-label" for="relay-light">
-                                        Lights
-                                        <?php if ($relays[0]['control_mode'] == 'automatic'): ?>
-                                            <small class="text-muted">(Auto)</small>
-                                        <?php endif; ?>
-                                    </label>
+
+                        <?php 
+                        $relay = new Relay();
+                        $relays = $relay->fetchAll();
+                        foreach ($relays as $index => $relay) {
+                            $relay_status_checked = ($relay['relay_status'] == 1) ? 'checked' : '';
+                            $control_mode_disabled = ($relay['control_mode'] == 'automatic') ? 'disabled' : '';
+                            $cursor_style = ($relay['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer';
+                            $label_text = ucfirst($relay['device_name']); // Device name as label
+                            $auto_text = ($relay['control_mode'] == 'automatic') ? '<small class="text-muted">(Auto)</small>' : '';
+
+                            echo "
+                            <li class='submenu-item'>
+                                <div class='d-flex gap-2 align-items-center mt-2 submenu-link'>
+                                    <div class='form-check form-switch fs-6'>
+                                        <input 
+                                            class='form-check-input me-0 relay-toggle' 
+                                            type='checkbox' 
+                                            id='relay-{$relay['device_name']}' 
+                                            data-relay-id='{$relay['id']}' 
+                                            $relay_status_checked 
+                                            $control_mode_disabled
+                                            style='cursor: $cursor_style'
+                                        />
+                                        <label class='form-check-label' for='relay-{$relay['device_name']}'>
+                                            $label_text
+                                            $auto_text
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    
-                        <li class="submenu-item">
-                            <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
-                                <i class="fa-solid fa-fan"></i>
-                                <div class="form-check form-switch fs-6">
-                                    <input
-                                        class="form-check-input me-0 relay-toggle"
-                                        type="checkbox"
-                                        id="relay-fan"
-                                        data-relay-id="2"
-                                        <?php 
-                                            echo ($relays[1]['relay_status'] == 1) ? 'checked' : ''; 
-                                            echo ($relays[1]['control_mode'] == 'automatic') ? ' disabled' : '';
-                                        ?>
-                                        style="cursor: <?php echo ($relays[1]['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer'; ?>"
-                                    />
-                                    <label class="form-check-label" for="relay-fan">
-                                        Fan
-                                        <?php if ($relays[1]['control_mode'] == 'automatic'): ?>
-                                            <small class="text-muted">(Auto)</small>
-                                        <?php endif; ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </li>
-                    
-                        <li class="submenu-item">
-                            <div class="d-flex gap-2 align-items-center mt-2 submenu-link">
-                                <i class="fa-solid fa-pump"></i>
-                                <div class="form-check form-switch fs-6">
-                                    <input
-                                        class="form-check-input me-0 relay-toggle"
-                                        type="checkbox"
-                                        id="relay-water-pump"
-                                        data-relay-id="3"
-                                        <?php 
-                                            echo ($relays[2]['relay_status'] == 1) ? 'checked' : ''; 
-                                            echo ($relays[2]['control_mode'] == 'automatic') ? ' disabled' : '';
-                                        ?>
-                                        style="cursor: <?php echo ($relays[2]['control_mode'] == 'automatic') ? 'not-allowed' : 'pointer'; ?>"
-                                    />
-                                    <label class="form-check-label" for="relay-water-pump">
-                                        Water Pump
-                                        <?php if ($relays[2]['control_mode'] == 'automatic'): ?>
-                                            <small class="text-muted">(Auto)</small>
-                                        <?php endif; ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </li>
+                            </li>";
+                        }
+                    ?>
+
                     </ul>
                     
                     

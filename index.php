@@ -47,7 +47,7 @@
                     <div class="col-12 col-lg-12">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card shadow-sm border-light">
+                                <div class="card shadow-sm border-light view" data-value="1">
                                     <div class="card-body py-4 px-4">
                                         <div class="d-flex align-items-center">
                                             <div
@@ -59,7 +59,8 @@
                                                 <h5 class="font-weight-extrabold mb-0"><span
                                                         id="ph_level_value">0.0</span></h5>
                                                 <div class="mt-2">
-                                                    <span class="badge bg-danger text-white" id="ph_level_status">Loading...</span>
+                                                    <span class="badge bg-danger text-white"
+                                                        id="ph_level_status">Loading...</span>
                                                 </div>
                                                 <div class="mt-2">
                                                     <small class="text-muted">Predicted pH Level in 3 days:
@@ -74,7 +75,7 @@
 
 
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card shadow-sm border-light">
+                                <div class="card shadow-sm border-light view" data-value="11">
                                     <div class="card-body py-4 px-4">
                                         <div class="d-flex align-items-center">
                                             <div
@@ -97,7 +98,7 @@
 
 
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card shadow-sm border-light">
+                                <div class="card shadow-sm border-light view" data-value="6">
                                     <div class="card-body py-4 px-4">
                                         <div class="d-flex align-items-center">
                                             <div
@@ -109,7 +110,8 @@
                                                 <h5 class="font-weight-extrabold mb-0"><span
                                                         id="light_intensity_value">Loading...</span> lx</h5>
                                                 <div class="mt-2">
-                                                    <span class="badge bg-warning text-dark" id="light_status">Loading...</span>
+                                                    <span class="badge bg-warning text-dark"
+                                                        id="light_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,7 +121,7 @@
 
 
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card shadow-sm border-light">
+                                <div class="card shadow-sm border-light view" data-value="4">
                                     <div class="card-body py-4 px-4">
                                         <div class="d-flex align-items-center">
                                             <div
@@ -143,7 +145,7 @@
 
 
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card shadow-sm border-light">
+                                <div class="card shadow-sm border-light view" data-value="3">
                                     <div class="card-body py-4 px-4">
                                         <div class="d-flex align-items-center">
                                             <div
@@ -156,7 +158,8 @@
                                                     <span id="tank1_temp_value">22</span> °C
                                                 </h5>
                                                 <div class="mt-2">
-                                                    <span class="badge bg-info text-dark" id="tank_status">Loading...</span>
+                                                    <span class="badge bg-info text-dark"
+                                                        id="tank_status">Loading...</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,7 +170,7 @@
 
 
                             <div class="col-12 col-md-6 col-lg-4">
-                                <div class="card shadow-sm border-light">
+                                <div class="card shadow-sm border-light view" data-value="5">
                                     <div class="card-body py-4 px-4">
                                         <div class="d-flex align-items-center">
                                             <div
@@ -201,10 +204,16 @@
                         <div class="container">
                             <div class="card mt-2">
                                 <div class="card-body">
-                                    <div class="card-title">pH Level
-                                        <div class="flex float-end">
-                                            <div class="input-group">
-                                                <select class="form-select" id="dateRangeSelect">
+                                    <div class="card-title d-flex justify-content-between align-items-center">
+                                        <span>Parameters Charts</span>
+
+                                        <div class="d-flex flex-row">
+                                            <!-- Date Range Selector -->
+                                            <div class="input-group me-2">
+                                                <label for="dateRangeSelect" class="form-label visually-hidden">Select
+                                                    Date Range</label>
+                                                <select class="form-select" id="dateRangeSelect"
+                                                    aria-label="Select Date Range">
                                                     <option value="24h">Last 24 Hours</option>
                                                     <option value="daily">Today</option>
                                                     <option value="7d">Last 7 Days</option>
@@ -212,8 +221,16 @@
                                                 </select>
                                             </div>
 
+                                            <!-- Back to All Button -->
+                                            <div class="input-group">
+                                                <button id="backToAllButton" class="btn btn-primary btn-sm"
+                                                    title="Back to all data">
+                                                    <i class="fa fa-refresh"></i> Reset
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div id="sensor_data_chart"></div>
                                 </div>
                             </div>

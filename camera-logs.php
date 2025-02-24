@@ -24,7 +24,7 @@
             </header>
 
             <div class="page-heading">
-                <h3>Hydroponics</h3>
+                <h3>Camera Logs</h3>
             </div>
             <div class="page-content">
                 <section class="row">

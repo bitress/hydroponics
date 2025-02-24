@@ -97,7 +97,7 @@ class Relay {
 
     public function fetchAll()
     {
-        $sql = "SELECT * FROM relays INNER JOIN devices ON devices.device_id = relays.id";
+        $sql = "SELECT * FROM relays INNER JOIN devices ON devices.device_id = relays.device_id";
         try {
             $stmt = $this->db->query($sql);
             $stmt->execute();

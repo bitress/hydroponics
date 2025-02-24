@@ -3,11 +3,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const dateRangeSelect = document.getElementById('dateRangeSelect');
     const chartDiv = document.getElementById('sensor_data_chart');
     let autoRefreshInterval;
+    let currentSensorId = 'all'; 
 
-    const fetchAllSensorData = (range) => {
+    
+
+    const fetchSensorData = (sensorId, range) => {
         const params = new URLSearchParams();
         params.append('range', range);
-        sensorIds.forEach(id => params.append('sensor_id[]', id));
+
+        if (sensorId === 'all') {
+            sensorIds.forEach(id => params.append('sensor_id[]', id));
+        } else {
+            params.append('sensor_id[]', sensorId);
+        }
+
         const url = `fetchSensorData.php?${params.toString()}`;
 
         return fetch(url)
@@ -22,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sensorIds.forEach(id => {
                     groupedData[id] = [];
                 });
+
                 data.forEach(item => {
                     const sensorId = item.id;
                     if (groupedData[sensorId]) {
@@ -48,6 +58,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 continue;
             }
             const sensorName = sensorData[0].sensor_name;
+            
+            console.log(`Sensor Name: ${sensorName}`); // Debugging: Check if the name is available
+    
             sensorData.sort((a, b) => a.reading_time - b.reading_time);
             const x = sensorData.map(d => d.reading_time);
             const y = sensorData.map(d => d.value);
@@ -55,16 +68,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 x: x,
                 y: y,
                 mode: 'lines+markers',
-                name: sensorName
+                name: sensorName, // Label to show
+                type: 'scatter', 
+                line: {
+                    shape: 'linear'
+                },
+                marker: {
+                    size: 6 
+                }
             };
             traces.push(trace);
         }
         return traces;
     };
+    
 
-    const updateChart = (range) => {
+    const updateChart = (sensorId, range) => {
+        console.log(`Updating chart for sensorId: ${sensorId}, range: ${range}`); // Debugging: Check selected sensor and range
         Plotly.newPlot(chartDiv, [], { title: 'Loading...' });
-        fetchAllSensorData(range)
+    
+        fetchSensorData(sensorId, range)
             .then(groupedData => {
                 if (!groupedData) {
                     Plotly.newPlot(chartDiv, [], {
@@ -74,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     return;
                 }
+    
                 const traces = createTraces(groupedData);
                 if (traces.length === 0) {
                     Plotly.newPlot(chartDiv, [], {
@@ -83,25 +107,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     return;
                 }
+    
+                console.log(`Traces for sensor ${sensorId}:`, traces); // Debugging: Check traces data
+    
                 const layout = {
                     title: 'Sensor Data Overview',
                     xaxis: {
                         title: 'Reading Time',
                         type: 'date',
                         tickformat: '%Y-%m-%d %H:%M:%S',
-                        tickangle: -45
+                        tickangle: -45 
                     },
                     yaxis: {
-                        title: 'Sensor Values'
+                        title: 'Sensor Values',
+                        tickformat: '.2f' 
                     },
                     legend: {
-                        orientation: 'h',
+                        orientation: 'h', 
                         y: -0.2
                     },
                     margin: {
-                        b: 150
-                    }
+                        b: 150            
+                    },
+                    hovermode: 'closest' 
                 };
+    
                 Plotly.newPlot(chartDiv, traces, layout);
             })
             .catch(error => {
@@ -113,23 +143,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
     };
-
-    const startAutoRefresh = (range) => {
+    
+    const startAutoRefresh = (sensorId, range) => {
         if (autoRefreshInterval) {
             clearInterval(autoRefreshInterval);
         }
         autoRefreshInterval = setInterval(() => {
-            updateChart(range);
-        }, 10000); // Reload every 10 seconds
+            updateChart(sensorId, range);
+        }, 10000);
     };
 
     const initialRange = dateRangeSelect.value;
-    updateChart(initialRange);
-    startAutoRefresh(initialRange);
+    updateChart('all', initialRange);  
+    startAutoRefresh('all', initialRange);
 
     dateRangeSelect.addEventListener('change', function () {
         const selectedRange = this.value;
-        updateChart(selectedRange);
-        startAutoRefresh(selectedRange);
+        updateChart(currentSensorId, selectedRange);
+        startAutoRefresh(currentSensorId, selectedRange);
+    });
+
+    $('.view').on('click', function () {
+        var sensorId = $(this).data('value'); 
+        currentSensorId = sensorId;  
+        updateChart(sensorId, initialRange);
+        startAutoRefresh(sensorId, initialRange);
+    });
+
+    $('#backToAllButton').on('click', function () {
+        currentSensorId = 'all';  
+        updateChart('all', initialRange);
+        startAutoRefresh('all', initialRange);
     });
 });

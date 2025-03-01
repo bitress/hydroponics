@@ -261,7 +261,7 @@
     <script src="assets/js/plotly.js"></script>
 
     <script>
-    fetch('http://139.99.97.250:5000/predict')
+    fetch('http://prediction.aquametrics.site/predict')
         .then(response => response.json())
         .then(data => {
             document.getElementById("predicted_ph_level").textContent = data.status;

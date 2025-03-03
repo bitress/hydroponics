@@ -35,12 +35,14 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modifyInterval">Modify Intervals</button>
+
                                         <div class="table-responsive mt-2">
                                             <table class="table table-striped ">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th>Sensor Name</th>
-                                                        <th>Cycles</th>
+                                                        <th>Interval</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -54,49 +56,15 @@
                                                     ?>
                                                     <tr class="sensor-row">
                                                         <td><?= htmlspecialchars($sensorData['sensor_name']) ?></td>
+                                                        <td>30 minutes</td>
                                         
                                                         <td>
-                                                            <?php if (!empty($sensorData['cycles'])): ?>
-                                                                <table class="table table-sm table-hover mb-0 nested-table">
-                                                                    <thead class="thead-light">
-                                                                        <tr>
-                                                                            <th style="width: 20%;">Cycle Number</th>
-                                                                            <th style="width: 40%;">Interval (Seconds)</th>
-                                                                            <th style="width: 40%;">Duration (Minutes)</th>
-                                                                            <th style="width: 40%;">Pause (Seconds)</th>
-                                                                            <th style="width: 40%;">Status</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <?php foreach ($sensorData['cycles'] as $cycle): ?>
-                                                                            <tr class="cycle-row" data-cycle-id="<?= htmlspecialchars($cycle['cycle_id']) ?>">
-                                                                                <td><?= htmlspecialchars($cycle['cycle_number']) ?></td>
-                                                                                <td><?= htmlspecialchars($cycle['interval_seconds']) ?></td>
-                                                                                <td><?= htmlspecialchars($cycle['duration_minutes']) ?></td>
-                                                                                <td><?= htmlspecialchars($cycle['pause']) ?></td>
-                                                                                <td>
-                                                                                    <?php if ($cycle['is_active']): ?>
-                                                                                        <button class="btn btn-danger btn-sm toggle-cycle-btn" data-action="stop">Stop</button>
-                                                                                    <?php else: ?>
-                                                                                        <button class="btn btn-success btn-sm toggle-cycle-btn" data-action="start">Start</button>
-                                                                                    <?php endif; ?>
-                                                                                </td>
-                                                                            </tr>
-                                                                        <?php endforeach; ?>
-                                                                    </tbody>
-                                                                </table>
-
-                                                            <?php else: ?>
-                                                                <span class="text-muted">No cycles available.</span>
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td>
                                                             <div class="btn-group" role="group" aria-label="Group Actions">
-                                                                <button type="button" class="btn btn-primary configure-cycle" data-sensor-id="<?= htmlspecialchars($sensorId) ?>"
+                                                                <!-- <button type="button" class="btn btn-primary configure-cycle" data-sensor-id="<?= htmlspecialchars($sensorId) ?>"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                                     title="Configure All Cycles for This Sensor">
                                                                     <i class="fa fa-cogs"></i>
-                                                                </button>
+                                                                </button> -->
                                                                 <button type="button" class="btn btn-danger delete-cycle" data-sensor-id="<?= htmlspecialchars($sensorId) ?>"
                                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                                     title="Delete All Cycles for This Sensor">
@@ -145,6 +113,26 @@
             </footer>
         </div>
     </div>
+
+
+    <!-- Modal -->
+<div class="modal fade" id="modifyInterval" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
     <div class="modal fade" id="editCycleModal" tabindex="-1" aria-labelledby="editCycleModalLabel" aria-hidden="true">

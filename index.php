@@ -297,33 +297,27 @@
                 statusClass: "bg-danger text-white"
             },
             {
-                min: 5.5,
+                min: 5.6,
                 max: 6.0,
                 statusText: "Acidic",
                 statusClass: "bg-warning text-dark"
             },
             {
-                min: 6.0,
-                max: 6.5,
+                min: 6.1,
+                max: 6.4,
                 statusText: "Suboptimal",
                 statusClass: "bg-warning text-dark"
             },
             {
                 min: 6.5,
-                max: 7.5,
+                max: 8,
                 statusText: "Optimal",
                 statusClass: "bg-success text-white"
             },
             {
-                min: 7.5,
-                max: 8.0,
-                statusText: "Slightly Alkaline",
-                statusClass: "bg-info text-white"
-            },
-            {
                 min: 8.0,
                 max: Infinity,
-                statusText: "Too Alkaline",
+                statusText: "Alkaline",
                 statusClass: "bg-danger text-white"
             }
         ];
@@ -376,38 +370,32 @@
     if (ambientTemperatureValue !== 'N/A') {
         const ambientTempRanges = [{
                 min: -Infinity,
-                max: 10,
+                max: 9,
                 statusText: "Too Cold",
                 statusClass: "bg-danger text-white"
             },
             {
                 min: 10,
-                max: 15,
+                max: 17,
                 statusText: "Cold",
                 statusClass: "bg-info text-dark"
             },
             {
-                min: 15,
-                max: 20,
-                statusText: "Cool",
-                statusClass: "bg-info text-dark"
-            },
-            {
-                min: 20,
-                max: 26,
+                min: 18,
+                max: 30,
                 statusText: "Optimal",
                 statusClass: "bg-success text-white"
             },
             {
-                min: 26,
-                max: 30,
-                statusText: "Hot",
+                min: 31,
+                max: 35,
+                statusText: "Warm",
                 statusClass: "bg-warning text-dark"
             },
             {
-                min: 30,
+                min: 6,
                 max: Infinity,
-                statusText: "Too Hot",
+                statusText: "Hot",
                 statusClass: "bg-danger text-white"
             }
         ];
@@ -421,38 +409,26 @@
     if (tankTemperatureValue !== 'N/A') {
         const tankTempRanges = [{
                 min: -Infinity,
-                max: 10,
+                max: 9,
                 statusText: "Too Cold",
                 statusClass: "bg-danger text-white"
             },
             {
                 min: 10,
-                max: 15,
+                max: 16,
                 statusText: "Cold",
                 statusClass: "bg-info text-dark"
             },
             {
-                min: 15,
-                max: 20,
-                statusText: "Cool",
-                statusClass: "bg-info text-dark"
-            },
-            {
-                min: 20,
-                max: 26,
+                min: 17,
+                max: 34,
                 statusText: "Optimal",
                 statusClass: "bg-success text-white"
             },
             {
-                min: 26,
-                max: 30,
-                statusText: "Hot",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 30,
+                min: 35,
                 max: Infinity,
-                statusText: "Too Hot",
+                statusText: "Hot",
                 statusClass: "bg-danger text-white"
             }
         ];
@@ -461,9 +437,14 @@
 
     // Water Level
     const waterLevelValue = water_level_data[0]?.value || 'N/A';
-    document.getElementById('water_level_value').innerText = waterLevelValue;
+    const $initialDepth = 60;
+    const $measuredDepth = parseFloat(waterLevelValue);
+    var $percentage_full = round(($measuredDepth / $initialDepth) * 100, 2);
 
-    if (waterLevelValue !== 'N/A') {
+    document.getElementById('water_level_value').innerText = $percentage_full;
+
+
+    if ($percentage_full !== 'N/A') {
         const waterLevelRanges = [{
                 min: -Infinity,
                 max: 50,

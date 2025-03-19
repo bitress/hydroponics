@@ -268,243 +268,265 @@
         })
         .catch(error => console.error('Error fetching data:', error));
 
-    // Function to update the status based on value ranges
-    function updateStatus(elementId, value, statusRanges) {
-        let statusText = "";
-        let statusClass = "";
+   // Function to update the status based on value ranges
+function updateStatus(elementId, value, statusRanges) {
+    let statusText = "";
+    let statusClass = "";
 
-        for (let range of statusRanges) {
-            if (value >= range.min && value <= range.max) {
-                statusText = range.statusText;
-                statusClass = range.statusClass;
-                break;
-            }
+    for (let range of statusRanges) {
+        if (value >= range.min && value <= range.max) {
+            statusText = range.statusText;
+            statusClass = range.statusClass;
+            break;
         }
-
-        document.getElementById(elementId).innerText = statusText;
-        document.getElementById(elementId).className = `badge ${statusClass}`;
     }
 
-    // PH Level
-    const phValue = ph_data[0]?.value || 'N/A';
-    document.getElementById('ph_level_value').innerText = phValue;
+    document.getElementById(elementId).innerText = statusText;
+    document.getElementById(elementId).className = `badge ${statusClass}`;
+}
 
-    if (phValue !== 'N/A') {
-        const phStatusRanges = [{
-                min: -Infinity,
-                max: 5.5,
-                statusText: "Too Acidic",
-                statusClass: "bg-danger text-white"
-            },
-            {
-                min: 5.6,
-                max: 6.0,
-                statusText: "Acidic",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 6.1,
-                max: 6.4,
-                statusText: "Suboptimal",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 6.5,
-                max: 8,
-                statusText: "Optimal",
-                statusClass: "bg-success text-white"
-            },
-            {
-                min: 8.0,
-                max: Infinity,
-                statusText: "Alkaline",
-                statusClass: "bg-danger text-white"
-            }
-        ];
-        updateStatus('ph_level_status', parseFloat(phValue), phStatusRanges);
-    }
+// Helper function for rounding since it was used but not defined
+function round(value, decimals) {
+    return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+}
 
-    // Humidity Level
-    const humidityValue = humidity_data[0]?.value || 'N/A';
-    document.getElementById('humidity_value').innerText = humidityValue;
+// PH Level
+const phValue = ph_data[0]?.value || 'N/A';
+document.getElementById('ph_level_value').innerText = phValue;
 
-    if (humidityValue !== 'N/A') {
-        const humidityStatusRanges = [{
-                min: -Infinity,
-                max: 30,
-                statusText: "Too Dry",
-                statusClass: "bg-danger text-white"
-            },
-            {
-                min: 30,
-                max: 50,
-                statusText: "Low Humidity",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 50,
-                max: 70,
-                statusText: "Optimal",
-                statusClass: "bg-success text-white"
-            },
-            {
-                min: 70,
-                max: 85,
-                statusText: "High Humidity",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 85,
-                max: Infinity,
-                statusText: "Too Humid",
-                statusClass: "bg-danger text-white"
-            }
-        ];
-        updateStatus('humidity_status', parseFloat(humidityValue), humidityStatusRanges);
-    }
+if (phValue !== 'N/A') {
+    const phStatusRanges = [{
+            min: -Infinity,
+            max: 5.5,
+            statusText: "Too Acidic",
+            statusClass: "bg-danger text-white"
+        },
+        {
+            min: 5.6,
+            max: 6.0,
+            statusText: "Acidic",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 6.1,
+            max: 6.4,
+            statusText: "Suboptimal",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 6.5,
+            max: 8,
+            statusText: "Optimal",
+            statusClass: "bg-success text-white"
+        },
+        {
+            min: 8.0,
+            max: Infinity,
+            statusText: "Alkaline",
+            statusClass: "bg-danger text-white"
+        }
+    ];
+    updateStatus('ph_level_status', parseFloat(phValue), phStatusRanges);
+}
 
-    // Ambient Temperature
-    const ambientTemperatureValue = environment_temperature_value[0]?.value || 'N/A';
-    document.getElementById('ambient_temperature_value').innerText = ambientTemperatureValue;
+// Humidity Level
+const humidityValue = humidity_data[0]?.value || 'N/A';
+document.getElementById('humidity_value').innerText = humidityValue;
 
-    if (ambientTemperatureValue !== 'N/A') {
-        const ambientTempRanges = [{
-                min: -Infinity,
-                max: 9,
-                statusText: "Too Cold",
-                statusClass: "bg-danger text-white"
-            },
-            {
-                min: 10,
-                max: 17,
-                statusText: "Cold",
-                statusClass: "bg-info text-dark"
-            },
-            {
-                min: 18,
-                max: 30,
-                statusText: "Optimal",
-                statusClass: "bg-success text-white"
-            },
-            {
-                min: 31,
-                max: 35,
-                statusText: "Warm",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 6,
-                max: Infinity,
-                statusText: "Hot",
-                statusClass: "bg-danger text-white"
-            }
-        ];
-        updateStatus('ambient_temp_status', parseFloat(ambientTemperatureValue), ambientTempRanges);
-    }
+if (humidityValue !== 'N/A') {
+    const humidityStatusRanges = [{
+            min: -Infinity,
+            max: 30,
+            statusText: "Too Dry",
+            statusClass: "bg-danger text-white"
+        },
+        {
+            min: 30,
+            max: 50,
+            statusText: "Low Humidity",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 50,
+            max: 70,
+            statusText: "Optimal",
+            statusClass: "bg-success text-white"
+        },
+        {
+            min: 70,
+            max: 85,
+            statusText: "High Humidity",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 85,
+            max: Infinity,
+            statusText: "Too Humid",
+            statusClass: "bg-danger text-white"
+        }
+    ];
+    updateStatus('humidity_status', parseFloat(humidityValue), humidityStatusRanges);
+}
 
-    // Tank Temperature
-    const tankTemperatureValue = tank1_temp_data[0]?.value || 'N/A';
-    document.getElementById('tank1_temp_value').innerText = tankTemperatureValue;
+// Ambient Temperature
+const ambientTemperatureValue = environment_temperature_value[0]?.value || 'N/A';
+document.getElementById('ambient_temperature_value').innerText = ambientTemperatureValue;
 
-    if (tankTemperatureValue !== 'N/A') {
-        const tankTempRanges = [{
-                min: -Infinity,
-                max: 9,
-                statusText: "Too Cold",
-                statusClass: "bg-danger text-white"
-            },
-            {
-                min: 10,
-                max: 16,
-                statusText: "Cold",
-                statusClass: "bg-info text-dark"
-            },
-            {
-                min: 17,
-                max: 34,
-                statusText: "Optimal",
-                statusClass: "bg-success text-white"
-            },
-            {
-                min: 35,
-                max: Infinity,
-                statusText: "Hot",
-                statusClass: "bg-danger text-white"
-            }
-        ];
-        updateStatus('tank_status', parseFloat(tankTemperatureValue), tankTempRanges);
-    }
+if (ambientTemperatureValue !== 'N/A') {
+    const ambientTempRanges = [{
+            min: -Infinity,
+            max: 9,
+            statusText: "Too Cold",
+            statusClass: "bg-danger text-white"
+        },
+        {
+            min: 10,
+            max: 17,
+            statusText: "Cold",
+            statusClass: "bg-info text-dark"
+        },
+        {
+            min: 18,
+            max: 30,
+            statusText: "Optimal",
+            statusClass: "bg-success text-white"
+        },
+        {
+            min: 31,
+            max: 35,
+            statusText: "Warm",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 36,  // Fixed from 6 to 36
+            max: Infinity,
+            statusText: "Hot",
+            statusClass: "bg-danger text-white"
+        }
+    ];
+    updateStatus('ambient_temp_status', parseFloat(ambientTemperatureValue), ambientTempRanges);
+}
 
-    // Water Level
-    const waterLevelValue = water_level_data[0]?.value || 'N/A';
-    const $initialDepth = 60;
-    const $measuredDepth = parseFloat(waterLevelValue);
-    var $percentage_full = round(($measuredDepth / $initialDepth) * 100, 2);
+// Tank Temperature
+const tankTemperatureValue = tank1_temp_data[0]?.value || 'N/A';
+document.getElementById('tank1_temp_value').innerText = tankTemperatureValue;
 
-    document.getElementById('water_level_value').innerText = $percentage_full;
+if (tankTemperatureValue !== 'N/A') {
+    const tankTempRanges = [{
+            min: -Infinity,
+            max: 9,
+            statusText: "Too Cold",
+            statusClass: "bg-danger text-white"
+        },
+        {
+            min: 10,
+            max: 16,
+            statusText: "Cold",
+            statusClass: "bg-info text-dark"
+        },
+        {
+            min: 17,
+            max: 34,
+            statusText: "Optimal",
+            statusClass: "bg-success text-white"
+        },
+        {
+            min: 35,
+            max: Infinity,
+            statusText: "Hot",
+            statusClass: "bg-danger text-white"
+        }
+    ];
+    updateStatus('tank_status', parseFloat(tankTemperatureValue), tankTempRanges);
+}
 
+// Water Level
+const waterLevelValue = water_level_data[0]?.value || 'N/A';
+const $initialDepth = 60;
+const $measuredDepth = parseFloat(waterLevelValue);
+var $percentage_full = round(($measuredDepth / $initialDepth) * 100, 2);
 
-    if ($percentage_full !== 'N/A') {
-        const waterLevelRanges = [{
-                min: -Infinity,
-                max: 50,
-                statusText: "Critical",
-                statusClass: "bg-danger text-white"
-            },
-            {
-                min: 50,
-                max: 70,
-                statusText: "Warning",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 70,
-                max: 90,
-                statusText: "Optimal",
-                statusClass: "bg-success text-white"
-            },
-            {
-                min: 90,
-                max: 100,
-                statusText: "Safe but Risky",
-                statusClass: "bg-info text-dark"
-            },
-            {
-                min: 100,
-                max: Infinity,
-                statusText: "Too High",
-                statusClass: "bg-danger text-white"
-            }
-        ];
-        updateStatus('water_level_status', parseFloat(waterLevelValue), waterLevelRanges);
-    }
+document.getElementById('water_level_value').innerText = $percentage_full;
 
-    // Light Intensity
-    const lightIntensityValue = light_data[0]?.value || 'N/A';
-    document.getElementById('light_intensity_value').innerText = lightIntensityValue;
+if ($percentage_full !== 'N/A') {
+    const waterLevelRanges = [{
+            min: -Infinity,
+            max: 50,
+            statusText: "Critical",
+            statusClass: "bg-danger text-white"
+        },
+        {
+            min: 50,
+            max: 70,
+            statusText: "Warning",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 70,
+            max: 90,
+            statusText: "Optimal",
+            statusClass: "bg-success text-white"
+        },
+        {
+            min: 90,
+            max: 100,
+            statusText: "Safe but Risky",
+            statusClass: "bg-info text-dark"
+        },
+        {
+            min: 100,
+            max: Infinity,
+            statusText: "Too High",
+            statusClass: "bg-danger text-white"
+        }
+    ];
+    updateStatus('water_level_status', $percentage_full, waterLevelRanges);  // Fixed: using $percentage_full instead of waterLevelValue
+}
 
-    if (lightIntensityValue !== 'N/A') {
-        const lightIntensityRanges = [{
-                min: 0,
-                max: 100,
-                statusText: "Low",
-                statusClass: "bg-warning text-dark"
-            },
-            {
-                min: 101,
-                max: 1000,
-                statusText: "Moderate",
-                statusClass: "bg-info text-dark"
-            },
-            {
-                min: 1001,
-                max: Infinity,
-                statusText: "High",
-                statusClass: "bg-success text-white"
-            }
-        ];
-        updateStatus('light_status', parseFloat(lightIntensityValue), lightIntensityRanges);
-    }
+// Light Intensity
+const lightIntensityValue = light_data[0]?.value || 'N/A';
+document.getElementById('light_intensity_value').innerText = lightIntensityValue;
+
+if (lightIntensityValue !== 'N/A') {
+    const lightIntensityRanges = [{
+            min: 0,
+            max: 500,
+            statusText: "Too Low",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 500,
+            max: 2000,
+            statusText: "Low",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 2000,
+            max: 31000,
+            statusText: "Good",
+            statusClass: "bg-info text-dark"
+        },
+        {
+            min: 32000,
+            max: 48000,
+            statusText: "Optimal",
+            statusClass: "bg-success text-dark"
+        },
+        {
+            min: 49000,
+            max: 50000,
+            statusText: "High",
+            statusClass: "bg-warning text-dark"
+        },
+        {
+            min: 50001,
+            max: Infinity,
+            statusText: "Too High",
+            statusClass: "bg-danger text-white"
+        }
+    ];
+    updateStatus('light_status', parseFloat(lightIntensityValue), lightIntensityRanges);
+}
     </script>
 </body>
 

@@ -139,9 +139,9 @@
                     
                 </li>
                 <li class="sidebar-item">
-                    <a href="settings.php" class="sidebar-link">
-                        <i class="fa-duotone fa-solid fa-gears"></i>
-                        <span>Settings</span>
+                    <a href="logout.php" class="sidebar-link">
+                        <i class="fa-duotone fa-solid fa-logout"></i>
+                        <span>Logout</span>
                     </a>
                 </li>
 

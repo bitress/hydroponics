@@ -33,7 +33,7 @@ if (!isset($_SESSION['username'])) {
             </header>
 
             <div class="page-heading">
-                <h3>Hydroponics Cycles</h3>
+                <h3> Cycles</h3>
             </div>
             <div class="page-content">
                 <section class="row">
@@ -135,7 +135,12 @@ if (!isset($_SESSION['username'])) {
       <div class="modal-body">
         <form action="">
             <label for="interval">Interval</label>
-            <input type="text" class="form-control" name="interval" id="interval" placeholder="Enter Interval">
+            <select class="form-control" name="interval" id="interval" placeholder="Enter Interval">
+                <option value="30 minutes">30 minutes</option>
+                <option value="30 minutes">45 minutes</option>
+                <option value="30 minutes">60 minutes</option>
+                <option value="30 minutes">120 minutes</option>
+                </select>
 
         </form>
       </div>

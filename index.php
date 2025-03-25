@@ -401,7 +401,7 @@ if (ambientTemperatureValue !== 'N/A') {
             statusClass: "bg-success text-white"
         },
         {
-            min: 30,
+            min: 30.1,
             max: 35,
             statusText: "Warm",
             statusClass: "bg-warning text-dark"

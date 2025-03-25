@@ -381,7 +381,8 @@ const ambientTemperatureValue = environment_temperature_value[0]?.value || 'N/A'
 document.getElementById('ambient_temperature_value').innerText = ambientTemperatureValue;
 
 if (ambientTemperatureValue !== 'N/A') {
-    const ambientTempRanges = [{
+    const ambientTempRanges = [
+        {
             min: -Infinity,
             max: 9,
             statusText: "Too Cold",
@@ -400,19 +401,24 @@ if (ambientTemperatureValue !== 'N/A') {
             statusClass: "bg-success text-white"
         },
         {
-            min: 31,
+            min: 30,
             max: 35,
             statusText: "Warm",
             statusClass: "bg-warning text-dark"
         },
         {
-            min: 36,  // Fixed from 6 to 36
+            min: 36, // Corrected from 6 to 36
             max: Infinity,
             statusText: "Hot",
             statusClass: "bg-danger text-white"
         }
     ];
-    updateStatus('ambient_temp_status', parseFloat(ambientTemperatureValue), ambientTempRanges);
+
+    const tempValue = parseFloat(ambientTemperatureValue);
+    console.log(tempValue)
+    if (!isNaN(tempValue)) {
+        updateStatus('ambient_temp_status', tempValue, ambientTempRanges);
+    }
 }
 
 // Tank Temperature

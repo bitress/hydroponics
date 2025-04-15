@@ -21,7 +21,7 @@ if (!isset($_SESSION['username'])) {
 
 <body>
     <script src="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/static/js/initTheme.js"></script>
-    
+
     <div id="app">
         <?php include_once __DIR__ . '/templates/navbar.php'; ?>
         <div id="main">
@@ -41,7 +41,12 @@ if (!isset($_SESSION['username'])) {
                         <!-- pH Sensor Logs (Sensor ID=1) -->
                         <div class="card mb-2">
                             <div class="card-body">
-                                <div class="card-title">pH Sensor Logs</div>
+                                <div class="card-title d-flex justify-content-between align-items-center">
+                                    <span>pH Sensor Logs</span>
+                                    <button class="btn btn-primary btn-sm" onclick="generatePDF(1)">Download Sensor
+                                        PDF</button>
+                                </div>
+
                                 <div class="table-responsive">
                                     <table class="table" id="ph_sensor_logs">
                                         <thead>
@@ -72,7 +77,10 @@ if (!isset($_SESSION['username'])) {
                         <!-- Tank 1 Temperature Logs (Sensor ID=3) -->
                         <div class="card mb-2">
                             <div class="card-body">
-                                <div class="card-title">Tank Temperature Logs</div>
+                                <div class="card-title d-flex justify-content-between align-items-center">Tank Temperature Logs
+                                <button class="btn btn-primary btn-sm" onclick="generatePDF(3)">Download Sensor
+                                PDF</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" id="temp_tank1_logs">
                                         <thead>
@@ -103,7 +111,10 @@ if (!isset($_SESSION['username'])) {
                         <!-- Ultrasonic Logs (Sensor ID=5) -->
                         <div class="card mb-2">
                             <div class="card-body">
-                                <div class="card-title">Ultrasonic Logs</div>
+                                <div class="card-title d-flex justify-content-between align-items-center">Ultrasonic Logs
+                                <button class="btn btn-primary btn-sm" onclick="generatePDF(5)">Download Sensor
+                                PDF</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" id="ultrasonic_sensor_logs">
                                         <thead>
@@ -133,7 +144,10 @@ if (!isset($_SESSION['username'])) {
                         <!-- Light Intensity Logs (Sensor ID=6) -->
                         <div class="card mb-2">
                             <div class="card-body">
-                                <div class="card-title">Light Intensity Logs</div>
+                                <div class="card-title d-flex justify-content-between align-items-center">Light Intensity Logs
+                                <button class="btn btn-primary btn-sm" onclick="generatePDF(6)">Download Sensor
+                                PDF</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" id="light_intensity_logs">
                                         <thead>
@@ -163,7 +177,10 @@ if (!isset($_SESSION['username'])) {
                         <!-- Environment Temperature Logs (Sensor ID=6) -->
                         <div class="card mb-2">
                             <div class="card-body">
-                                <div class="card-title">Environment Temperature Logs</div>
+                                <div class="card-title d-flex justify-content-between align-items-center">Environment Temperature Logs
+                                <button class="btn btn-primary btn-sm" onclick="generatePDF(4)">Download Sensor
+                                PDF</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" id="env_temp_logs">
                                         <thead>
@@ -193,7 +210,10 @@ if (!isset($_SESSION['username'])) {
                         <!-- Environment Temperature Logs (Sensor ID=6) -->
                         <div class="card mb-2">
                             <div class="card-body">
-                                <div class="card-title">Humidity Logs</div>
+                                <div class="card-title d-flex justify-content-between align-items-center">Humidity Logs
+                                <button class="btn btn-primary btn-sm" onclick="generatePDF(11)">Download Sensor
+                                PDF</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table" id="humid_logs">
                                         <thead>
@@ -241,7 +261,12 @@ if (!isset($_SESSION['username'])) {
         </div>
     </div>
 
+
+
     <?php include_once 'templates/body-scripts.php'; ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
 
     <script>
     // Initialize Simple Datatables for each table
@@ -272,6 +297,38 @@ if (!isset($_SESSION['username'])) {
         searchable: true,
         fixedHeight: true,
     });
+
+
+    async function generatePDF(sensorID) {
+        const {
+            jsPDF
+        } = window.jspdf;
+        const pdf = new jsPDF();
+
+        // Fetch the data
+        const res = await fetch(`get_sensor_logs.php?sensor_id=${sensorID}`);
+        const data = await res.json();
+
+        // Convert data to table rows
+        const rows = data.map((item, index) => [
+            index + 1,
+            item.value,
+            item.reading_time
+        ]);
+
+        // Create the table
+        pdf.text("Sensor Report", 14, 15);
+        pdf.autoTable({
+            head: [
+                ['#', 'Value', 'Timestamp']
+            ],
+            body: rows,
+            startY: 20
+        });
+
+        // Save the PDF
+        pdf.save(`sensor-${sensorID}.pdf`);
+    }
     </script>
 </body>
 
